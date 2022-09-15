@@ -1,4 +1,4 @@
-package services.databaseBank.makeEstablishe;
+package databaseBank.makeEstablishe;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -47,4 +47,6 @@ public class sqliteConnect {
         }
 
     }
+
+
 }

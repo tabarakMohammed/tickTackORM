@@ -1,5 +1,5 @@
 package services.insertPkg.insert;
-import services.databaseBank.makeEstablishe.sqliteConnect;
+import databaseBank.makeEstablishe.sqliteConnect;
 import services.insertPkg.interFace.interFace;
 
 import java.lang.reflect.Field;

@@ -1,4 +1,4 @@
-package services.databaseBank;
+package databaseBank;
 
 import java.sql.Connection;
 

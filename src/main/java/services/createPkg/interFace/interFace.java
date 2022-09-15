@@ -1,4 +1,7 @@
 package services.createPkg.interFace;
 
-public interface interFace {
+public interface interFace<T> {
+
+    int newTable(T object);
+
 }

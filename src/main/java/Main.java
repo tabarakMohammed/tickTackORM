@@ -1,9 +1,7 @@
+import databaseBank.databaseConnection;
 import modelTester.test;
-import services.databaseBank.databaseConnection;
+import services.createPkg.create.create;
 import services.insertPkg.insert.insert;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,6 +11,12 @@ public class Main {
 
         databaseConnection dc = new databaseConnection();
         dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite");
+        create nTable = new create();
+        test ts = new test();
+
+        nTable.newTable(ts);
+
+
 
         /**
         test ts = new test();
