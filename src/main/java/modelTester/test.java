@@ -8,13 +8,13 @@ import services.createPkg.createAnnotations.size;
 public class test{
 
 
-    @columnConstraint(constraint = constraintType.PRIMARY_KEY)
+    @columnConstraint(constraint1 = constraintType.PRIMARY_KEY)
     int id;
-    @columnConstraint(constraint = constraintType.NOTNULL)
+    @columnConstraint(constraint1 = constraintType.NOTNULL)
     @size(filedSize = 20)
     String username;
 
-    @columnConstraint(constraint = constraintType.NOTNULL)
+    @columnConstraint(constraint1 = constraintType.NOTNULL)
     @size(filedSize = 40)
     String password;
 
