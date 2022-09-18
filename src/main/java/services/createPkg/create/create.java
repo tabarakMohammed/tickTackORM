@@ -123,7 +123,6 @@ public class create<T> implements interFace<T> {
            Field[] objectAttributes = _object.getClass().getDeclaredFields();
                     for (Field _objectAttributes : objectAttributes) {
 
-
                         switch(_objectAttributes.getType().toString()) {
                             case "class java.lang.String":
                                 System.out.println("VARCHAR(size)");
