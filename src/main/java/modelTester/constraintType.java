@@ -1,7 +1,23 @@
 package modelTester;
 
 public enum constraintType {
- empty,NOTNULL,UNIQUE,PRIMARY_KEY
+ empty(""),
+ NOTNULL("NOTNULL"),
+ UNIQUE("UNIQUE"),
 
+ FOREIGN_KEY("FOREIGN KEY"),
+ PRIMARY_KEY("PRIMARY KEY");
+
+
+ private String displayName;
+
+ constraintType(String displayName) {
+  this.displayName = displayName;
  }
+
+ public String displayName() { return displayName; }
+
+ // Optionally and/or additionally, toString.
+ @Override public String toString() { return displayName; }
+}
 

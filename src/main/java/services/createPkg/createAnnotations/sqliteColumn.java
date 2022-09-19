@@ -10,9 +10,9 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface columnConstraint {
+public @interface sqliteColumn {
    double DEFAULT() default (0.000);
-   String CHECK() default ("");
+   String CHECK() default ("SQL Condition");
    constraintType constraint1() default constraintType.empty;
    constraintType constraint2() default constraintType.empty;
 }

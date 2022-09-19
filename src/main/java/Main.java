@@ -1,11 +1,7 @@
 import databaseBank.databaseConnection;
 import modelTester.test;
 import services.createPkg.create.create;
-import services.createPkg.createAnnotations.columnConstraint;
-import services.createPkg.createAnnotations.size;
 import services.insertPkg.insert.insert;
-
-import java.lang.reflect.Field;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,35 +11,15 @@ public class Main {
 
         databaseConnection dc = new databaseConnection();
         dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite");
-    //    create nTable = new create();
+        create nTable = new create();
         test ts = new test();
 
-//        Field[] objectAttributes = ts.getClass().getDeclaredFields();
-//        for (Field _objectAttributes : objectAttributes) {
-//
-//            if(
-//               _objectAttributes.getAnnotation(columnConstraint.class) != null ) {
-//                System.out.print(_objectAttributes.getName() + "-"
-//
-//                                + _objectAttributes.getAnnotation(columnConstraint.class).constraint()
-//                                + "-"
-//                                + _objectAttributes.getAnnotation(columnConstraint.class).DEFAULT()
-//                                + "-"
-//                                + _objectAttributes.getAnnotation(columnConstraint.class).CHECK()
-//                                +
-//                                _objectAttributes.getAnnotation(columnConstraint.class).constraint2() +
-//
-//                        "-"
-//
-//                );
-//
-//            } if (_objectAttributes.getAnnotation(size.class) != null) {
-//                System.out.println(    _objectAttributes.getAnnotation(size.class).filedSize());
-//            }
-//        }
 
-      //  nTable.newTable(ts);
-
+try {
+            nTable.newTable(ts);
+        } catch (NullPointerException e){
+    e.printStackTrace();
+}
 
 
         /**
