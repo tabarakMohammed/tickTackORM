@@ -21,24 +21,25 @@ public class insert<T> implements interFace<T> {
         String _stringCheckType = "";
         int i = 0;
         for (Field _objectAttributes : objectAttributes) {
-            dataMember.setLength(0);
-            valuesForSql.setLength(0);
+
             if (_objectAttributes.getName().contentEquals("id")) {
                 /*skip Id*/
                 continue;
             } else
                 try {
+
                     if (i++ == objectAttributes.length - 2) {
                         /*Last Iteration*/
 
-                        dataMember.append(dataMember).append(_objectAttributes.getName()).append(')');
+                        dataMember.append(_objectAttributes.getName()).append(')');
                         valuesForSql.append('?').append(')');
 
                     } else {
                         /*Collect members for database sql command*/
-                        dataMember.append(dataMember).append( _objectAttributes.getName()).append(',');
+                        dataMember.append( _objectAttributes.getName()).append(',');
                         valuesForSql.append('?').append(',');
                     }
+
 
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -118,8 +119,7 @@ public class insert<T> implements interFace<T> {
         String _stringCheckType = "";
         int i = 0;
         for (Field _objectAttributes : objectAttributes) {
-            dataMember.setLength(0);
-            valuesForSql.setLength(0);
+
             if (_objectAttributes.getName().contentEquals("id")) {
                 /*skip Id*/
                 continue;
@@ -128,12 +128,12 @@ public class insert<T> implements interFace<T> {
                     if (i++ == objectAttributes.length - 2) {
                         /*Last Iteration*/
 
-                        dataMember.append(dataMember).append( _objectAttributes.getName()).append(')');
+                        dataMember.append( _objectAttributes.getName()).append(')');
                         valuesForSql.append('?').append(')');
 
                     } else {
                         /*Collect members for database sql command*/
-                        dataMember.append(dataMember).append(_objectAttributes.getName()).append(',');
+                        dataMember.append(_objectAttributes.getName()).append(',');
                         valuesForSql.append('?').append(',');
                     }
 
