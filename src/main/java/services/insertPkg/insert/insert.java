@@ -14,28 +14,28 @@ public class insert<T> implements interFace<T> {
     @Override
     public int insertRow(T object) {
         String sqlInsertStatement = "INSERT INTO "+object.getClass().getSimpleName()+" (";
-        String dataMember = "";
-        String valuesForSql = " VALUES(";
+        StringBuilder dataMember = new StringBuilder();
+        StringBuilder valuesForSql = new StringBuilder(" VALUES(");
         Field[] objectAttributes = object.getClass().getDeclaredFields();
 
         String _stringCheckType = "";
         int i = 0;
         for (Field _objectAttributes : objectAttributes) {
             if (_objectAttributes.getName().contentEquals("id")) {
-                /**skip Id*/
+                /*skip Id*/
                 continue;
             } else
                 try {
                     if (i++ == objectAttributes.length - 2) {
-                        /**Last Iteration*/
+                        /*Last Iteration*/
 
-                        dataMember = dataMember + _objectAttributes.getName() + ')';
-                        valuesForSql = valuesForSql + '?' + ')';
+                        dataMember.append(dataMember).append(_objectAttributes.getName()).append(')');
+                        valuesForSql.append('?').append(')');
 
                     } else {
-                        /**Collect members for database sql command*/
-                        dataMember = dataMember + _objectAttributes.getName() + ',';
-                        valuesForSql = valuesForSql + '?' + ',';
+                        /*Collect members for database sql command*/
+                        dataMember.append(dataMember).append( _objectAttributes.getName()).append(',');
+                        valuesForSql.append('?').append(',');
                     }
 
                 } catch (Exception e) {
@@ -108,8 +108,8 @@ public class insert<T> implements interFace<T> {
     @Override
     public int insertMultiRow(List<T> objects) {
         String sqlInsertStatement = "INSERT INTO "+objects.get(0).getClass().getSimpleName()+" (";
-        String dataMember = "";
-        String valuesForSql = " VALUES(";
+        StringBuilder dataMember = new StringBuilder();
+        StringBuilder valuesForSql = new StringBuilder(" VALUES(");
 
         Field[] objectAttributes = objects.get(0).getClass().getDeclaredFields();
 
@@ -117,20 +117,20 @@ public class insert<T> implements interFace<T> {
         int i = 0;
         for (Field _objectAttributes : objectAttributes) {
             if (_objectAttributes.getName().contentEquals("id")) {
-                /**skip Id*/
+                /*skip Id*/
                 continue;
             } else
                 try {
                     if (i++ == objectAttributes.length - 2) {
-                        /**Last Iteration*/
+                        /*Last Iteration*/
 
-                        dataMember = dataMember + _objectAttributes.getName() + ')';
-                        valuesForSql = valuesForSql + '?' + ')';
+                        dataMember.append(dataMember).append( _objectAttributes.getName()).append(')');
+                        valuesForSql.append('?').append(')');
 
                     } else {
-                        /**Collect members for database sql command*/
-                        dataMember = dataMember + _objectAttributes.getName() + ',';
-                        valuesForSql = valuesForSql + '?' + ',';
+                        /*Collect members for database sql command*/
+                        dataMember.append(dataMember).append(_objectAttributes.getName()).append(',');
+                        valuesForSql.append('?').append(',');
                     }
 
                 } catch (Exception e) {
