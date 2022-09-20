@@ -2,7 +2,7 @@ package modelTester;
 
 public enum constraintType {
  empty(""),
- NOTNULL("NOTNULL"),
+ NOTNULL("NOT NULL"),
  UNIQUE("UNIQUE"),
 
  FOREIGN_KEY("FOREIGN KEY"),

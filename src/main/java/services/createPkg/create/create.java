@@ -15,19 +15,14 @@ public class create<T> implements interFace<T> {
     @Override
     public int newTable(T _object) throws NullPointerException {
 
-        String sql = "CREATE TABLE IF NOT EXISTS "+ _object.getClass().getSimpleName() +" (\n"
-                + "	id integer PRIMARY KEY,\n"
-                + "	name text NOT NULL,\n"
-                + "	capacity real\n"
-                + ");";
 
-        String coco = "CREATE TABLE IF NOT EXISTS "+ _object.getClass().getSimpleName() +" (";
-            String dataMember = "";
-            String valuesForSql = " VALUES(";
+        String sql = "CREATE TABLE IF NOT EXISTS "+ _object.getClass().getSimpleName() +" (";
+        StringBuilder dataMember = new StringBuilder();
+
             int i = 0;
 
-            String filedType="";
-            String constraint="";
+            StringBuilder filedType= new StringBuilder();
+            StringBuilder constraint= new StringBuilder();
             String sizey ="";
 
         Field[] objectAttributes = _object.getClass().getDeclaredFields();
@@ -36,206 +31,182 @@ public class create<T> implements interFace<T> {
 
                         switch(_objectAttributes.getType().toString()) {
                             case "class java.lang.String":
-                               // System.out.println("VARCHAR(size)");
                                 if(_objectAttributes.getAnnotation(sqliteColumn.class) == null) {
-                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name ->\t" +
+                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name -> " +
                                             _objectAttributes.getName()  );
-                                } else
+                                }
+                                    filedType.setLength(0);
+                                   constraint.setLength(0);
                                 if( !_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()
                                         .contentEquals("SQL Condition")){
-                                    constraint = "CHECK"+"("
-                                            +_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()+")\t";
+                                    constraint.append("CHECK" + "(").append(_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()).append(") ");
                                 }
                                 if( _objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT() != 0.000){
-                                    constraint = constraint + "DEFAULT\t" +
-                                            _objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT();
-                                }
-//
-                                if (_objectAttributes.getAnnotation(size.class) != null) {
-                                    sizey = "(" + String.valueOf(_objectAttributes.getAnnotation(size.class).filedSize()) + ")\t";
+                                    constraint.append("DEFAULT ").append(_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT());
                                 }
 
-                                filedType = "text" +sizey
-                                        + _objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName()+'\t'
-                                        + _objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName()+'\t'
-                                       + constraint;
-                                constraint ="";
+                                if (_objectAttributes.getAnnotation(size.class) != null) {
+                                    sizey = "(" + (_objectAttributes.getAnnotation(size.class).filedSize()) + ") ";
+                                }
+
+                                filedType.append("text").append(sizey).append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName())
+                                        .append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName()).append(' ').append(constraint);
                                 sizey ="";
                                 break;
                             case "int":
-                                // code block
-                             //   System.out.println("INT(size)");
+
                                 if(_objectAttributes.getAnnotation(sqliteColumn.class) == null) {
-                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name ->\t" +
+                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name -> " +
                                             _objectAttributes.getName()  );
-                                } else
+                                }
+                                    filedType.setLength(0);
+                                    constraint.setLength(0);
                                 if (!_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()
                                              .contentEquals("SQL Condition")) {
-                                         constraint = "CHECK" + "("
-                                                 + _objectAttributes.getAnnotation(sqliteColumn.class).CHECK() + ")\t";
+                                         constraint.append("CHECK").append("(").append(
+                                                 _objectAttributes.getAnnotation(sqliteColumn.class).CHECK()).append(") ");
                                      }
                                      if (_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT() != 0.000) {
-                                         constraint = constraint + "DEFAULT\t" +
-                                                 _objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT();
+                                         constraint.append("DEFAULT ").append(_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT());
                                      }
-//
+
                                      if(_objectAttributes.getAnnotation(size.class) != null){
-                                       sizey = "(" + String.valueOf(_objectAttributes.getAnnotation(size.class).filedSize()) +")\t";
+                                       sizey = "(" +(_objectAttributes.getAnnotation(size.class).filedSize()) +") ";
                                      }
-                                     filedType = "integer" + sizey
-                                             + _objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName() + '\t'
-                                             + _objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName() + '\t'
-                                             + constraint;
-                                     constraint = "";
-                                        sizey = "";
+                                     filedType.append("integer").append(sizey).append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName())
+                                             .append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName()).append(' ').append(constraint);
+
+                                sizey = "";
 
                                 break;
                             case "Long":
-                                // code block
+
                                 if(_objectAttributes.getAnnotation(sqliteColumn.class) == null) {
-                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name ->\t" +
+                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name -> " +
                                             _objectAttributes.getName()  );
-                                } else
+                                }
+                                    filedType.setLength(0);
+                                    constraint.setLength(0);
                                     if (!_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()
                                             .contentEquals("SQL Condition")) {
-                                        constraint = "CHECK" + "("
-                                                + _objectAttributes.getAnnotation(sqliteColumn.class).CHECK() + ")\t";
+                                        constraint.append("CHECK" + "(").append(_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()).append(") ");
                                     }
                                     if (_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT() != 0.000) {
-                                        constraint = constraint + "DEFAULT\t" +
-                                                _objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT();
+                                        constraint.append("DEFAULT ").append(_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT());
                                     }
-//
-                                    if (_objectAttributes.getAnnotation(size.class) != null) {
-                                        sizey = "(" + String.valueOf(_objectAttributes.getAnnotation(size.class).filedSize()) + ")\t";
-                                    }
-                                    filedType = "BIGINT" + sizey
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName() + '\t'
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName() + '\t'
-                                            + constraint;
-                                    constraint = "";
 
-                                //System.out.println("BIGINT(size)");
+                                    if (_objectAttributes.getAnnotation(size.class) != null) {
+                                        sizey = "(" +(_objectAttributes.getAnnotation(size.class).filedSize()) + ") ";
+                                    }
+                                    filedType.append("BIGINT").append(sizey).append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName())
+                                            .append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName()).append(' ').append(constraint);
+                                    sizey = "";
                                 break;
                             case "byte":
-                                // code block
                                 if(_objectAttributes.getAnnotation(sqliteColumn.class) == null) {
-                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name ->\t" +
+                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name -> " +
                                             _objectAttributes.getName()  );
 
-                                } else
+                                }
+                                    filedType.setLength(0);
+                                    constraint.setLength(0);
                                     if (!_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()
                                             .contentEquals("SQL Condition")) {
-                                        constraint = "CHECK" + "("
-                                                + _objectAttributes.getAnnotation(sqliteColumn.class).CHECK() + ")\t";
+                                        constraint.append("CHECK" + "(").append(_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()).append(") ");
                                     }
                                     if (_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT() != 0.000) {
-                                        constraint = constraint + "DEFAULT\t" +
-                                                _objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT();
+                                        constraint.append("DEFAULT ").append(_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT());
                                     }
-//
-                                    filedType = "BIT"
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName() + '\t'
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName() + '\t'
-                                            + constraint;
-                                    constraint = "";
 
-                             //   System.out.println("BIT");
+                                    filedType.append("BIT" + ' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName()).append(' ')
+                                            .append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName()).append(' ').append(constraint);
+
                                 break;
                             case "float":
-                                // code block
                                 if(_objectAttributes.getAnnotation(sqliteColumn.class) == null) {
-                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name ->\t" +
+                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name -> " +
                                             _objectAttributes.getName()  );
 
-                                } else
+                                }
+                                    filedType.setLength(0);
+                                   constraint.setLength(0);
                                     if (!_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()
                                             .contentEquals("SQL Condition")) {
-                                        constraint = "CHECK" + "("
-                                                + _objectAttributes.getAnnotation(sqliteColumn.class).CHECK() + ")\t";
+                                        constraint.append("CHECK" + "(").append(_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()).append(") ");
                                     }
                                     if (_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT() != 0.000) {
-                                        constraint = constraint + "DEFAULT\t" +
-                                                _objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT();
+                                        constraint.append("DEFAULT ").append(_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT());
                                     }
 //
                                     if (_objectAttributes.getAnnotation(size.class) != null) {
-                                        sizey = "(" + String.valueOf(_objectAttributes.getAnnotation(size.class).filedSize()) + ")\t";
+                                        sizey = "(" +(_objectAttributes.getAnnotation(size.class).filedSize()) + ") ";
                                     }
-                                    filedType = "FLOAT" +sizey
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName() + '\t'
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName() + '\t'
-                                            + constraint;
-                                    constraint = "";
+                                    filedType.append("FLOAT").append(sizey).append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName())
+                                            .append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName()).append(' ').append(constraint);
+                                    sizey = "";
 
-                            //    System.out.println("FLOAT(size, d)");
+                            /*
+                               ("FLOAT(size, d)");
+                             */
                                 break;
                             case "double":
-                                // code block
+
                                 if(_objectAttributes.getAnnotation(sqliteColumn.class) == null) {
-                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name ->\t" +
+                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name -> " +
                                             _objectAttributes.getName()  );
-                                } else
+                                }
+                                    filedType.setLength(0);
+                                    constraint.setLength(0);
                                 if (!_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()
                                             .contentEquals("SQL Condition")) {
-                                        constraint = "CHECK" + "("
-                                                + _objectAttributes.getAnnotation(sqliteColumn.class).CHECK() + ")\t";
+                                        constraint.append("CHECK" + "(").append(_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()).append(") ");
                                     }
                                     if (_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT() != 0.000) {
-                                        constraint = constraint + "DEFAULT\t" +
-                                                _objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT();
+                                        constraint.append("DEFAULT ").append(_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT());
                                     }
 //
                                     if (_objectAttributes.getAnnotation(size.class) != null) {
-                                        sizey = "(" + String.valueOf(_objectAttributes.getAnnotation(size.class).filedSize()) + ")\t";
+                                        sizey = "(" +(_objectAttributes.getAnnotation(size.class).filedSize()) + ") ";
                                     }
-                                    filedType = "DOUBLE" +sizey
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName() + '\t'
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName() + '\t'
-                                            + constraint;
-                                    constraint = "";
+                                    filedType.append("DOUBLE").append(sizey).append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName())
+                                            .append(' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName()).append(' ').append(constraint);
+                                 sizey = "";
 
-                                System.out.println("DOUBLE(size, d)");
+                              /*
+                               ("DOUBLE(size, d)");
+                                */
                                 break;
                             case "boolean":
-                                // code block
+
                                 if(_objectAttributes.getAnnotation(sqliteColumn.class) == null) {
-                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name ->\t" +
+                                    throw new NullPointerException("you must add sqliteColumn annotation to filed name -> " +
                                             _objectAttributes.getName()  );
-                                } else
+                                }
+                                    filedType.setLength(0);
+                                    constraint.setLength(0);
                                 if (!_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()
                                             .contentEquals("SQL Condition")) {
-                                        constraint = "CHECK" + "("
-                                                + _objectAttributes.getAnnotation(sqliteColumn.class).CHECK() + ")\t";
+                                        constraint.append("CHECK" + "(").append(_objectAttributes.getAnnotation(sqliteColumn.class).CHECK()).append(") ");
                                     }
                                     if (_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT() != 0.000) {
-                                        constraint = constraint + "DEFAULT\t" +
-                                                _objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT();
+                                        constraint.append("DEFAULT ").append(_objectAttributes.getAnnotation(sqliteColumn.class).DEFAULT());
                                     }
-//
-                                    filedType = "BOOLEAN"
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName() + '\t'
-                                            + _objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName() + '\t'
-                                            + constraint;
-                                    constraint = "";
 
-                              //  System.out.println("BOOLEAN");
+                                    filedType.append("BOOLEAN" + ' ').append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint1().displayName()).append(' ')
+                                            .append(_objectAttributes.getAnnotation(sqliteColumn.class).constraint2().displayName()).append(' ').append(constraint);
+
                                 break;
                             default:
-                                // code block
                                  }
                     try {
                         if (i++ == objectAttributes.length -1) {
-                            /**Last Iteration*/
 
-                            dataMember = dataMember + _objectAttributes.getName() + " "
-                                    + filedType + ')';
+                            dataMember.append(_objectAttributes.getName()).append(" ").append(filedType).append(')');
 
 
                         } else {
-                            /**Collect members for database sql command*/
-                            dataMember = dataMember + _objectAttributes.getName() + " "
-                                    + filedType + ',' +'\n';
+                            /*Collect members for database sql command*/
+                            dataMember.append(_objectAttributes.getName()).append(" ").append(filedType).append(',').append('\n');
                         }
 
                     } catch (Exception e) {
@@ -243,10 +214,10 @@ public class create<T> implements interFace<T> {
                     }
             }
 
-                    System.out.println(coco+dataMember);
-
+                    System.out.println(sql+dataMember);
+                    String lastSql = sql + dataMember;
         try (Connection conn = sqliteConnect.getConnect();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(lastSql)) {
             stmt.executeUpdate();
             return 1;
         } catch (SQLException e) {

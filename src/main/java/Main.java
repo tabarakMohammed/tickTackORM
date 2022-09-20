@@ -1,4 +1,5 @@
 import databaseBank.databaseConnection;
+import modelTester.burger;
 import modelTester.test;
 import services.createPkg.create.create;
 import services.insertPkg.insert.insert;
@@ -12,6 +13,8 @@ public class Main {
         databaseConnection dc = new databaseConnection();
         dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite");
         create nTable = new create();
+        burger bg = new burger();
+
         test ts = new test();
 
 
