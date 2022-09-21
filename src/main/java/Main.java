@@ -16,17 +16,6 @@ public class Main {
         databaseConnection dc = new databaseConnection();
         dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite","modelTester");
 
-//        create nTable = new create();
-//        burger bg = new burger();
-//
-//        test ts = new test();
-//
-//
-//try {
-//            nTable.newTable(ts);
-//        } catch (NullPointerException e){
-//    e.printStackTrace();
-//}
 
 
 /**

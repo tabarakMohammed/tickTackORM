@@ -11,8 +11,8 @@ import java.lang.reflect.Constructor;
 
 public class databaseConnection implements  connectionInterface {
     @Override
-    public void sqliteConnect(String url, String PackageNameForModels) {
-        sqliteConnect.setConnectionUrl(url);
+    public void sqliteConnect(String sqlUrl, String PackageNameForModels) {
+        sqliteConnect.setConnectionUrl(sqlUrl);
 
         Reflections ref = new Reflections(PackageNameForModels);
         for (Class<?> cl : ref.getTypesAnnotatedWith(makeTable.class)) {
