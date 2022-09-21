@@ -66,7 +66,7 @@ public class insert<T> implements interFace<T> {
                     count = count + 1;
 
                 try {
-
+/***if not get*/
                     getMethods = object.getClass().
                             getDeclaredMethod("get" + _objectAttributes.getName().substring(0, 1).toUpperCase()
                                     + _objectAttributes.getName().substring(1));

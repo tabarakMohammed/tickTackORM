@@ -1,4 +1,5 @@
-package modelTester;
+package services.createPkg.createAnnotations.constraintList;
+
 
 public enum constraintType {
  empty(""),
@@ -17,7 +18,6 @@ public enum constraintType {
 
  public String displayName() { return displayName; }
 
- // Optionally and/or additionally, toString.
  @Override public String toString() { return displayName; }
 }
 

@@ -1,5 +1,6 @@
 package modelTester;
 
+import services.createPkg.createAnnotations.constraintList.constraintType;
 import services.createPkg.createAnnotations.sqliteColumn;
 import services.createPkg.createAnnotations.makeTable;
 import services.createPkg.createAnnotations.size;
@@ -18,7 +19,8 @@ public class test{
     @size(filedSize = 40)
     String password;
 
-
+    @sqliteColumn
+  String glory;
 
 
 

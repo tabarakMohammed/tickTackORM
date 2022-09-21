@@ -10,11 +10,11 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        insert my = new insert();
+      //  insert my = new insert();
 
 
         databaseConnection dc = new databaseConnection();
-        dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite");
+        dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite","modelTester");
 
 //        create nTable = new create();
 //        burger bg = new burger();

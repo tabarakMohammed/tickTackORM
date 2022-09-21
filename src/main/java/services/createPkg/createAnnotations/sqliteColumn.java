@@ -1,7 +1,7 @@
 package services.createPkg.createAnnotations;
 
 
-import modelTester.constraintType;
+import services.createPkg.createAnnotations.constraintList.constraintType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
