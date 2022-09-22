@@ -17,7 +17,10 @@ public class test{
     String password;
 
     @sqliteColumn
-  String glory;
+    String glory;
+
+    @sqliteColumn
+    String coco;
 
 
 
