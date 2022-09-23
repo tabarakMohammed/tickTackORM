@@ -251,6 +251,8 @@ public class create<T> implements interFace<T> {
                         infoInDataBase_.add(tableMap);
                     }
 
+                    conn.setAutoCommit(false);
+
 
                     for (int counter = 0; counter < infoInCode_.size(); counter++) {
                         StringBuilder updateCreateSql = new StringBuilder("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n");
@@ -268,23 +270,35 @@ public class create<T> implements interFace<T> {
                                             updateCreateSql.setLength(0);
                                             updateCreateSql.append("DROP TABLE ").append(_object.getClass().getSimpleName());
                                             System.out.println(updateCreateSql);
-                                            System.out.println(lastSql);
 
+
+                                                 stmt.executeUpdate(updateCreateSql.toString());
+
+                                                    System.out.println(lastSql);
+                                                    stmt.executeUpdate(lastSql);
+                                                    conn.commit();
                                         }
-
-
                                     }
                                     if (infoInCode_.get(counter).toUpperCase().contains("NOT NULL")) {
                                         if (infoInDataBase_.get(counter).get("isnull").equals("0")) {
                                             /*
                                              * refactor column constraint with not null */
-                                            updateCreateSql.append("DROP  ").append(infoInDataBase_.get(counter).get("name"));
-                                            System.out.println(updateCreateSql);
-                                            updateCreateSql.setLength(0);
-                                            updateCreateSql.append("ADD  ").append(infoInDataBase_.get(counter).get("name"))
-                                                    .append(" ").append(infoInDataBase_.get(counter).get("typeCol"))
-                                                    .append(" ").append("NOT NULL  ").append("DEFAULT ").append("0");
-                                            System.out.println(updateCreateSql);
+
+                                            updateCreateSql.append("DROP  COLUMN ").append(infoInDataBase_.get(counter).get("name"));
+                                            System.out.println("nono" +updateCreateSql);
+
+                                           stmt.executeUpdate(updateCreateSql.toString());
+
+
+                                                updateCreateSql.setLength(0);
+                                            updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append(" ")
+                                                    .append("ADD  ").append(infoInDataBase_.get(counter).get("name"))
+                                                            .append(" ").append(infoInDataBase_.get(counter).get("typeCol"))
+                                                            .append(" ").append("NOT NULL  ").append("DEFAULT ").append("0");
+
+                                                    stmt.executeUpdate(updateCreateSql.toString());
+                                                    conn.commit();
+                                                System.out.println("kk" + updateCreateSql);
 
                                         }
 
@@ -293,36 +307,59 @@ public class create<T> implements interFace<T> {
 
                                     /*
                                      * refactor column data type */
-                                    updateCreateSql.append("DROP ").append(infoInDataBase_.get(counter).get("name"));
+                                    updateCreateSql.append(" DROP COLUMN ").append(infoInDataBase_.get(counter).get("name"));
                                     System.out.println(updateCreateSql);
-                                    updateCreateSql.setLength(0);
-                                    updateCreateSql.append("ADD ").append(infoInCode_.get(counter).replace(")", ""));
-                                    System.out.println(updateCreateSql);
+
+                                    stmt.executeUpdate(updateCreateSql.toString());
+                                                 updateCreateSql.setLength(0);
+                                                 updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
+                                                         .append("ADD ").append(infoInCode_.get(counter).replace(")", ""));
+                                                 System.out.println(updateCreateSql);
+
+                                                 stmt.executeUpdate(updateCreateSql.toString());
+                                                 conn.commit();
+
+
 
 
                                 }
                             } else {
                                 /*
                                  * refactor column name */
+
                                 String[] nameColumn = infoInCode_.get(counter).split(" ");
                                 updateCreateSql.append("RENAME ").append(infoInDataBase_.get(counter).get("name"))
                                         .append(" ").append("to ").append(nameColumn[0]);
 
                                 System.out.println(updateCreateSql);
+                                try {
+                                    stmt.executeUpdate(updateCreateSql.toString());
+                                    conn.commit();
+                                } catch (SQLException x) {
+                                    conn.rollback();
+                                    System.out.println("there exist");
+                                }
 
                             }
 
 
-                        } catch (Exception e) {
+                        } catch (java.lang.IndexOutOfBoundsException ex) {
 
+                            ex.printStackTrace();
                             /*
                              * refactor add new column  */
 
                             if (infoInCode_.get(counter).toUpperCase().contains("PRIMARY KEY")) {
                                 updateCreateSql.setLength(0);
                                 updateCreateSql.append("DROP TABLE  ").append(_object.getClass().getSimpleName());
-                                System.out.println(updateCreateSql);
-                                System.out.println(lastSql);
+                                   stmt.executeUpdate(updateCreateSql.toString());
+                                    System.out.println(lastSql);
+                                    stmt.executeUpdate(lastSql);
+                                    conn.commit();
+
+
+
+
                             } else {
                                 if (infoInCode_.get(counter).toUpperCase().contains("NOT NULL")) {
                                     if (!infoInCode_.get(counter).toUpperCase().contains("DEFAULT")) {
@@ -330,14 +367,25 @@ public class create<T> implements interFace<T> {
                                                 .append(" ").append("DEFAULT ").append("0");
                                         System.out.println(updateCreateSql);
 
+                                        stmt.executeUpdate(updateCreateSql.toString());
+                                        conn.commit();
+
                                     } else {
                                         updateCreateSql.append("ADD ").append(infoInCode_.get(counter).replace(")", ""));
-                                        System.out.println(infoInCode_.get(counter));
+                                        System.out.println("else " + updateCreateSql );
+                                        stmt.executeUpdate(updateCreateSql.toString());
+                                        conn.commit();
                                     }
 
                                 } else {
                                     updateCreateSql.append("ADD ").append(infoInCode_.get(counter).replace(")", ""));
                                     System.out.println(updateCreateSql);
+
+                                       stmt.executeUpdate(updateCreateSql.toString());
+                                       conn.commit();
+
+
+
                                 }
                             }
 
@@ -348,6 +396,9 @@ public class create<T> implements interFace<T> {
                     }
 
 
+                } catch (SQLException e1){
+                    e1.printStackTrace();
+                    conn.rollback();
                 }
 
             }
