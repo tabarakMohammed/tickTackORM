@@ -1,11 +1,4 @@
-import databaseBank.databaseConnection;
-import modelTester.burger;
-import modelTester.test;
-import services.createPkg.create.create;
-import services.insertPkg.insert.insert;
-
-import java.util.ArrayList;
-import java.util.List;
+import DBConnection.DatabaseConnection;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,8 +6,8 @@ public class Main {
       //  insert my = new insert();
 
 
-        databaseConnection dc = new databaseConnection();
-        dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite","modelTester");
+        DatabaseConnection dc = new DatabaseConnection();
+        dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite", "model");
 
 
 
