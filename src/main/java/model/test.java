@@ -27,6 +27,13 @@ public class test{
     @SqliteColumn
     String coco;
 
+ @additiveColumnConstraint
+    @SqliteColumn
+    String nuw;
+
+
+
+
 
 
 
