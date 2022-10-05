@@ -11,7 +11,7 @@ public class test{
     @SqliteColumn
     int id;
 
-    @SqliteColumn(constraint = ConstraintType.NOTNULL,check = ("a>b"), defaultConstraint = 1000)
+    @SqliteColumn(constraint = ConstraintType.NOTNULL, defaultConstraint = 1000)
     @additiveColumnConstraint(constraint = ConstraintType.UNIQUE)
     String username;
 
@@ -29,7 +29,8 @@ public class test{
 
  @additiveColumnConstraint
     @SqliteColumn
-    String nuw;
+    String now;
+
 
 
 

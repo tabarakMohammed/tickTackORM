@@ -1,11 +1,12 @@
 package services.creates.create;
 
 import DBConnection.DBEstablishe.SqliteConnect;
+import org.sqlite.SQLiteException;
 import services.creates.icreate.ICreate;
 
 import java.lang.reflect.Field;
 import java.sql.*;
-import java.util.*;
+import java.util.Arrays;
 
 public class SqliteCreate<T> implements ICreate<T> {
 
@@ -55,26 +56,36 @@ public class SqliteCreate<T> implements ICreate<T> {
         try (Connection conn = SqliteConnect.getConnect();
              Statement stmt = conn.createStatement()) {
 
-            String existTable = "SELECT EXISTS (SELECT * FROM sqlite_master WHERE tbl_name = "+"'"+_object.getClass().getSimpleName() +"'"+")";
-            ResultSet result =  stmt.executeQuery(existTable);
-            result.getString("EXISTS (SELECT * FROM sqlite_master WHERE tbl_name = "+"'"+_object.getClass().getSimpleName() +"'"+")");
+            String existTable = "EXISTS (SELECT * FROM sqlite_master WHERE tbl_name = "+"'"+_object.getClass().getSimpleName() +"'"+")";
+            ResultSet result =  stmt.executeQuery(" SELECT "+ existTable);
+            String exist = result.getString(existTable);
 
-           return  MemberAlter.alter(conn,stmt,sqlPragmaQuery,createQuery,dataMember,_object);
+                if(exist.equals("1")) {
+                    return MemberAlter.alter(conn, stmt, sqlPragmaQuery, createQuery, dataMember, _object);
+                } else {
+                    try {
+                        stmt.execute(createQuery);
+                    }catch (SQLiteException e){
+                        e.printStackTrace();
 
+                        if(e.getMessage().startsWith("[SQLITE_ERROR] SQL error or missing database")  ||  e.getErrorCode() == 1) {
+                            throw new SQLiteException("check the condition of Column Constraint ( @Check (condition!) ) in Class "
+                                    +_object.getClass().getSimpleName()
+                                    ,e.getResultCode());
+                        }
+                    }
+                }
 
 
         } catch (SQLException e) {
-            if(e.getMessage().startsWith("no such column:") || e.getErrorCode() == 0) {
-                try (Connection conn = SqliteConnect.getConnect();
-                     Statement statement = conn.createStatement()) {
-                     statement.executeUpdate(createQuery);
-                } catch (SQLException r) {
-                    r.printStackTrace();
-                }
-            }
-           e.printStackTrace();
-           return 0;
+            e.printStackTrace();
+
+            return 0;
+
         }
+        return 1;
 
     }
-}
+
+    }
+

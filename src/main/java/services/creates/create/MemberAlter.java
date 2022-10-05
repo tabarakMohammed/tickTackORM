@@ -35,18 +35,40 @@ public class MemberAlter {
             }
 
             conn.setAutoCommit(false);
-
+               String[] codeColumnName;
             int count;
             for (int forCounter = 0; forCounter < _infoInCode.size(); forCounter++) {
+                 /*get column name and check it to avoid contain sequential characters issue */
+                codeColumnName = _infoInCode.get(forCounter).split(" ");
                     /* first loop for sorting data from database to check the all changes*/
                  count = 0;
                 while (count < _infoInDataBase.size()) {
-                    if (_infoInCode.get(forCounter).toUpperCase().contains(_infoInDataBase.get(count).get("name").toUpperCase())) {
+                    if (codeColumnName[0].equalsIgnoreCase(_infoInDataBase.get(count).get("name"))) {
                         _sortInfoInDataBase.add(_infoInDataBase.get(count));
                          count = _infoInDataBase.size();
                     }
                     count++;
                 }
+
+              //  System.out.println(_sortInfoInDataBase.get(forCounter).get("name") );
+
+//                try {
+//                    if (_infoInCode.get(forCounter).toUpperCase().contains(_sortInfoInDataBase.get(forCounter).get("name").toUpperCase())) {
+//                        System.out.println(forCounter + "- good");
+//                    }
+//
+//                } catch (IndexOutOfBoundsException e){
+//                    if (forCounter != _sortInfoInDataBase.size()) {
+//                        System.out.println(codeColumnName[0] + " add ");
+//                    }
+//
+//                    if (!_infoInCode.get(forCounter).toUpperCase().contains(_infoInDataBase.get(forCounter).get("name").toUpperCase())) {
+//                        System.out.println(_infoInCode.get(forCounter) + "rename from " + _infoInDataBase.get(forCounter).get("name"));
+//                        _sortInfoInDataBase.add(_infoInDataBase.get(forCounter));
+//
+//                    }
+//
+//                }
 
                 /*sql command that's make changes on database*/
                 StringBuilder updateCreateSql = new StringBuilder("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n");
@@ -119,27 +141,16 @@ public class MemberAlter {
 
 
                         }
-                    } else {
-                        /*
-                         * refactor column name */
-
-                        String[] nameColumn = _infoInCode.get(forCounter).split(" ");
-                        updateCreateSql.append("RENAME ").append(_sortInfoInDataBase.get(forCounter).get("name"))
-                                .append(" ").append("to ").append(nameColumn[0]);
-
-                        System.out.println(updateCreateSql);
-                        try {
-                            stmt.executeUpdate(updateCreateSql.toString());
-                            conn.commit();
-                        } catch (SQLException x) {
-                            conn.rollback();
-                         //   x.printStackTrace();
-                        }
-
                     }
 
 
+
+
+
                 } catch (java.lang.IndexOutOfBoundsException ex) {
+
+                 if (forCounter != _sortInfoInDataBase.size()) {
+                     System.out.println(forCounter +"!="+ _sortInfoInDataBase.size());
 
                     /*
                      * refactor add new column  */
@@ -161,13 +172,13 @@ public class MemberAlter {
                                 System.out.println(updateCreateSql);
 
                                 stmt.executeUpdate(updateCreateSql.toString());
-                                conn.commit();
+                             //   conn.commit();
 
                             } else {
                                 updateCreateSql.append("ADD ").append(_infoInCode.get(forCounter).replace(")", ""));
                                 System.out.println("else " + updateCreateSql );
                                 stmt.executeUpdate(updateCreateSql.toString());
-                                conn.commit();
+                               // conn.commit();
                             }
 
                         } else {
@@ -175,18 +186,34 @@ public class MemberAlter {
                             System.out.println(updateCreateSql);
 
                             stmt.executeUpdate(updateCreateSql.toString());
-                            conn.commit();
+                          //  conn.commit();
 
 
 
                         }
                     }
+                     }
+                if (!_infoInCode.get(forCounter).toUpperCase().contains(_infoInDataBase.get(forCounter).get("name").toUpperCase())) {
+                       System.out.println(_infoInCode.get(forCounter) + "rename");
+                /*     * refactor column name */
 
-
+                        updateCreateSql.append("RENAME ").append(_infoInDataBase.get(forCounter).get("name"))
+                                .append(" ").append("to ").append(codeColumnName[0]);
+                               _sortInfoInDataBase.add(_infoInDataBase.get(forCounter));
+                        System.out.println(updateCreateSql);
+                        try {
+                            stmt.executeUpdate(updateCreateSql.toString());
+                           conn.commit();
+                        } catch (SQLException x) {
+                            conn.rollback();
+                            x.printStackTrace();
+                        }
+                     }
                 }
 
 
             }
+
 
 
         } catch (SQLException e1){
