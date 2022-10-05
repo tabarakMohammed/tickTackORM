@@ -162,7 +162,7 @@ public class MemberAlter {
                         stmt.executeUpdate(updateCreateSql.toString());
                         System.out.println(createQuery);
                         stmt.executeUpdate(createQuery);
-                      //  conn.commit();
+                        conn.commit();
 
 
                     } else {
