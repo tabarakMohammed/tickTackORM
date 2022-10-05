@@ -31,6 +31,14 @@ public class test{
     @SqliteColumn
     String now;
 
+   @additiveColumnConstraint
+    @SqliteColumn(constraint = ConstraintType.NOTNULL)
+    int boby;
+
+   @additiveColumnConstraint
+    @SqliteColumn(constraint = ConstraintType.NOTNULL,defaultConstraint = 50.000)
+    int price;
+
 
 
 
