@@ -24,7 +24,6 @@ public class InsertWorker<T> implements IInsert<T> {
 
             if (_objectAttributes.getName().contentEquals("id")) {
                 /*skip Id*/
-                continue;
             } else
                 try {
 
@@ -49,8 +48,8 @@ public class InsertWorker<T> implements IInsert<T> {
 
         sqlInsertStatement = sqlInsertStatement + dataMember + valuesForSql;
         System.out.println(sqlInsertStatement);
-
-        try (Connection conn = SqliteConnect.getConnect();
+        new SqliteConnect();
+        try (Connection conn =  SqliteConnect.getConnect();
              PreparedStatement _preparedStatement = conn.prepareStatement(sqlInsertStatement)) {
 
             int count = 0;
@@ -103,7 +102,7 @@ public class InsertWorker<T> implements IInsert<T> {
             } else return 0;
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return 0;
         }
     }

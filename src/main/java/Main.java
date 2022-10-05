@@ -1,9 +1,11 @@
 import DBConnection.DatabaseConnection;
+import model.test;
+import services.inserts.insert.InsertWorker;
 
 public class Main {
     public static void main(String[] args) {
 
-      //  insert my = new insert();
+      //  InsertWorker my = new InsertWorker();
 
 
         DatabaseConnection dc = new DatabaseConnection();
@@ -11,12 +13,17 @@ public class Main {
 
 
 
-/**
-        test ts = new test();
-        ts.setUsername("non67");
-        ts.setPassword("123d%*%sds6ss76");
-        my.insertRow(ts);
-*/
+
+//        test ts = new test();
+//        ts.setUsername("pop");
+//        ts.setPassword("123d%*%sds6ss76");
+//        ts.setBoby(1000);
+//        ts.setCoco("coco");
+//        ts.setGlory("glory");
+//        ts.setNow("now");
+//        ts.setPrice(50000);
+//        my.insertRow(ts);
+
 /**
         List<test> myls = new ArrayList<>();
         test ts = new test();

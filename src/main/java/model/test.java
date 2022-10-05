@@ -33,18 +33,51 @@ public class test{
 
    @additiveColumnConstraint
     @SqliteColumn(constraint = ConstraintType.NOTNULL)
-    int boby;
+    float boby;
 
    @additiveColumnConstraint
     @SqliteColumn(constraint = ConstraintType.NOTNULL,defaultConstraint = 50.000)
     int price;
 
+    public String getGlory() {
+        return glory;
+    }
 
+    public String getCoco() {
+        return coco;
+    }
 
+    public String getNow() {
+        return now;
+    }
 
+//    public int getBoby() {
+//        return boby;
+//    }
 
+    public int getPrice() {
+        return price;
+    }
 
+    public void setGlory(String glory) {
+        this.glory = glory;
+    }
 
+    public void setCoco(String coco) {
+        this.coco = coco;
+    }
+
+    public void setNow(String now) {
+        this.now = now;
+    }
+
+//    public void setBoby(int boby) {
+//        this.boby = boby;
+//    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 
     public int getId() {return id;}
 
