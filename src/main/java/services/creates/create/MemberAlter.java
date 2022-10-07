@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class MemberAlter {
 
@@ -224,53 +223,24 @@ public class MemberAlter {
 
             }
 
-           int whileCounter = 0;
-           int whileCounter1 ;
-           int counterNotExits ;
-           while (whileCounter < _infoInDataBase.size()) {
-               whileCounter1 = 0;
-               counterNotExits = 0;
-               while (whileCounter1 < _infoInCode.size()){
-                   String[]  codeColumnName = _infoInCode.get(whileCounter1).split(" ");
 
-                   if(!_infoInDataBase.get(whileCounter).get("name").equalsIgnoreCase(codeColumnName[0])){
-                       counterNotExits++;
-                   }
-
-                   if(_infoInCode.size() == counterNotExits){
-                       System.out.println(_infoInDataBase.get(whileCounter).get("name"));
-                   }
-
-                   whileCounter1++;
-
-               }
-               whileCounter++;
-           }
-
-//           int whileCounter = 0;
-//           AtomicInteger counter = new AtomicInteger(0);
-//
-//           while (whileCounter < _infoInDataBase.size()) {
-//               String[]  codeColumnNamez = _infoInCode.get(whileCounter).split(" ");
-//
-//               try {
-//                   if (_infoInDataBase.get(whileCounter).get("name").equalsIgnoreCase(codeColumnNamez[0])) {
-//
-//                       System.out.println(_sortInfoInDataBase.get(whileCounter).get("name"));
-//                   } else {
-//                       System.out.println(_sortInfoInDataBase.get(whileCounter).get("name"));
-//                   }
-//               } catch (IndexOutOfBoundsException inx) {
-////                   _infoInDataBase.stream().filter(item  -> !item.get("name").contains(_infoInCode.get(counter.get())))
-////                           .collect(Collectors.toList());
-//
-//                   System.out.println("thiss is " +_infoInDataBase.get(whileCounter).get("name") );
-//                   inx.printStackTrace();
-//
-//               }
-//               whileCounter++;
-//               counter.getAndIncrement();
-//           }
+            /* check the column is remove from class and exist in table, we drop it */
+           AtomicInteger counterNotExits = new AtomicInteger();
+           AtomicInteger whileCounter1 = new AtomicInteger();
+               _infoInDataBase.stream().forEach((xCol)->{
+                   whileCounter1.set (0);
+                   counterNotExits.set(0);
+                           _infoInCode.stream().forEach(cCol -> {
+                               String[]  codeColumnName = _infoInCode.get(whileCounter1.get()).split(" ");
+                               if(!xCol.get("name").equalsIgnoreCase(codeColumnName[0])){
+                                   counterNotExits.getAndIncrement();
+                               }
+                               if(_infoInCode.size() == counterNotExits.get()){
+                                   System.out.println(xCol.get("name"));
+                               }
+                               whileCounter1.getAndIncrement();
+                           });
+               });
 
 
 
