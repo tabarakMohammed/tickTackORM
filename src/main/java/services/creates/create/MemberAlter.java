@@ -1,6 +1,9 @@
 package services.creates.create;
 
 
+import org.sqlite.SQLiteErrorCode;
+import org.sqlite.SQLiteException;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,8 +20,9 @@ public class MemberAlter {
 
        try (ResultSet rs = stmt.executeQuery(sqlPragmaQuery)){
 
-            String[] codeClassInfo = dataMember.toString().replace("\n", "").split(",");
-            _infoInCode.addAll(Arrays.asList(codeClassInfo));
+               String[] codeClassInfo = dataMember.toString().replace("\n", "").split(",");
+               _infoInCode.addAll(Arrays.asList(codeClassInfo));
+
 
             while (rs.next()) {
                 Map<String, String> tableMap = new HashMap<>();
@@ -43,9 +47,10 @@ public class MemberAlter {
             for (int forCounter = 0; forCounter < _infoInCode.size(); forCounter++) {
                  /*get column name and check it to avoid contain sequential characters issue */
                 String[]  codeColumnName = _infoInCode.get(forCounter).split(" ");
+                /*remove last character*/
+                String filed = _infoInCode.get(forCounter).substring(0,_infoInCode.get(forCounter).length()-1);
 
                     /* first loop for sorting data from database to check the all changes*/
-
                  count = 0;
                 while (count < _infoInDataBase.size()) {
                     if (codeColumnName[0].equalsIgnoreCase(_infoInDataBase.get(count).get("name"))) {
@@ -54,7 +59,6 @@ public class MemberAlter {
                     }
                     count++;
                 }
-
 
 
 
@@ -121,7 +125,7 @@ public class MemberAlter {
                                         if (!_infoInCode.get(forCounter).toUpperCase().contains("DEFAULT")) {
                                             updateCreateSql.setLength(0);
                                             updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
-                                                    .append("ADD ").append(_infoInCode.get(forCounter).replace(")", ""))
+                                                    .append("ADD ").append(filed)
                                                     .append(" ").append("DEFAULT ").append("0");
 
 
@@ -131,7 +135,7 @@ public class MemberAlter {
                                         } else {
                                             updateCreateSql.setLength(0);
                                             updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
-                                                    .append("ADD ").append(_infoInCode.get(forCounter).replace(")", ""));
+                                                    .append("ADD ").append(filed);
 
 
                                             stmt.executeUpdate(updateCreateSql.toString());
@@ -144,7 +148,7 @@ public class MemberAlter {
                                         stmt.executeUpdate(updateCreateSql.toString());
                                         updateCreateSql.setLength(0);
                                         updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
-                                                .append("ADD ").append(_infoInCode.get(forCounter).replace(")", ""));
+                                                .append("ADD ").append(filed);
 
                                         stmt.executeUpdate(updateCreateSql.toString());
                                         conn.commit();
@@ -161,62 +165,47 @@ public class MemberAlter {
 
 
                 } catch (java.lang.IndexOutOfBoundsException ex) {
-
                  if (forCounter >= _sortInfoInDataBase.size()) {
-                    /*
-                     * refactor add new column  */
-
+                    /* refactor add new column  */
                     if (_infoInCode.get(forCounter).toUpperCase().contains("PRIMARY KEY")) {
                         updateCreateSql.setLength(0);
                         updateCreateSql.append("DROP TABLE  ").append(_object.getClass().getSimpleName());
                         stmt.executeUpdate(updateCreateSql.toString());
-
                         stmt.executeUpdate(createQuery);
                         conn.commit();
-
-
-                    } else {
+                     } else {
                         if (_infoInCode.get(forCounter).toUpperCase().contains("NOT NULL")) {
                             /*we can not alter table to add new column with NOT NULL constraint with set null value  */
                             if (!_infoInCode.get(forCounter).toUpperCase().contains("DEFAULT")) {
-                                updateCreateSql.append("ADD ").append(_infoInCode.get(forCounter).replace(")", ""))
-                                        .append(" ").append("DEFAULT ").append("0");
-
-
-                                stmt.executeUpdate(updateCreateSql.toString());
-                                conn.commit();
-
-                            } else {
-                                updateCreateSql.append("ADD ").append(_infoInCode.get(forCounter).replace(")", ""));
-
+                                updateCreateSql.append("ADD ").append(filed).append(" ")
+                                        .append("DEFAULT ").append("0");
                                 stmt.executeUpdate(updateCreateSql.toString());
                                 conn.commit();
                             }
+                                    else {
+                                        updateCreateSql.append("ADD ").append(filed);
+                                        stmt.executeUpdate(updateCreateSql.toString());
+                                        conn.commit();
+                                    }
 
                         } else {
-                            updateCreateSql.append("ADD ").append(_infoInCode.get(forCounter).replace(")", ""));
-
-
+                            updateCreateSql.append("ADD ").append(filed);
                             stmt.executeUpdate(updateCreateSql.toString());
                             conn.commit();
-
-
                         }
                     }
-                     } else
-                if (!_infoInCode.get(forCounter).toUpperCase().contains(_infoInDataBase.get(forCounter).get("name").toUpperCase())) {
-                /*     * refactor column name */
-
+                     } else if (!_infoInCode.get(forCounter).toUpperCase().contains(_infoInDataBase.get(forCounter).get("name").toUpperCase())) {
+                          /*     * refactor column name */
                         updateCreateSql.append("RENAME ").append(_infoInDataBase.get(forCounter).get("name"))
                                 .append(" ").append("to ").append(codeColumnName[0]);
                                _sortInfoInDataBase.add(_infoInDataBase.get(forCounter));
-                        try {
-                            stmt.executeUpdate(updateCreateSql.toString());
-                           conn.commit();
-                        } catch (SQLException x) {
-                            conn.rollback();
-                            x.printStackTrace();
-                        }
+                            try {
+                                stmt.executeUpdate(updateCreateSql.toString());
+                                conn.commit();
+                            } catch (SQLException x) {
+                                conn.rollback();
+                                x.printStackTrace();
+                            }
                      }
                 }
 
@@ -225,29 +214,39 @@ public class MemberAlter {
 
 
             /* check the column is remove from class and exist in table, we drop it */
-           AtomicInteger counterNotExits = new AtomicInteger();
-           AtomicInteger whileCounter1 = new AtomicInteger();
-               _infoInDataBase.stream().forEach((xCol)->{
-                   whileCounter1.set (0);
-                   counterNotExits.set(0);
-                           _infoInCode.stream().forEach(cCol -> {
-                               String[]  codeColumnName = _infoInCode.get(whileCounter1.get()).split(" ");
+           StringBuilder updateCreateSql = new StringBuilder();
+               _infoInDataBase.forEach((xCol)->{
+                   AtomicInteger counterNotExits = new AtomicInteger(0);
+                   AtomicInteger objectCounter = new AtomicInteger(0);
+
+                           _infoInCode.forEach(cCol -> {
+                               String[]  codeColumnName = _infoInCode.get(objectCounter.get()).split(" ");
                                if(!xCol.get("name").equalsIgnoreCase(codeColumnName[0])){
                                    counterNotExits.getAndIncrement();
                                }
-                               if(_infoInCode.size() == counterNotExits.get()){
-                                   System.out.println(xCol.get("name"));
+                               if(_infoInCode.size() == counterNotExits.get() ){
+
+                                   updateCreateSql.setLength(0);
+                                   updateCreateSql.append("ALTER TABLE ").append( _object.getClass().getSimpleName()).append(" ").append("DROP COLUMN '");
+                                   updateCreateSql.append(xCol.get("name")).append("'");
+                                   try {
+                                       stmt.executeUpdate(updateCreateSql.toString());
+                                       conn.commit();
+                                   }catch (SQLException sqLiteException){sqLiteException.printStackTrace();}
                                }
-                               whileCounter1.getAndIncrement();
+                               objectCounter.getAndIncrement();
                            });
                });
 
 
 
 
-
-        } catch (SQLException e1){
-          //  e1.printStackTrace();
+        } catch (SQLException e){
+            e.printStackTrace();
+           if(e.getMessage().contains("(near \")\": syntax error)") || e.getMessage().contains("(error in table test after add column: no such column: ") ) {
+               throw new SQLiteException("check the condition of Column Constraint ( @Check (condition!) ) in Class "
+                       +_object.getClass().getSimpleName(), SQLiteErrorCode.getErrorCode(1));
+            }
             conn.rollback();
             return 0;
         }

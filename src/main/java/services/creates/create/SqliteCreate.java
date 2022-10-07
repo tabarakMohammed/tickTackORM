@@ -6,7 +6,6 @@ import services.creates.icreate.ICreate;
 
 import java.lang.reflect.Field;
 import java.sql.*;
-import java.util.Arrays;
 
 public class SqliteCreate<T> implements ICreate<T> {
 
@@ -18,6 +17,7 @@ public class SqliteCreate<T> implements ICreate<T> {
         String sqlPragmaQuery = "PRAGMA table_info (" + _object.getClass().getSimpleName() + ")";
         String prefixCreateQuery = "CREATE TABLE IF NOT EXISTS " + _object.getClass().getSimpleName() + " (";
         StringBuilder dataMember = new StringBuilder();
+
 
         int counter = 0;
         Field[] objectAttributes = _object.getClass().getDeclaredFields();
@@ -59,20 +59,36 @@ public class SqliteCreate<T> implements ICreate<T> {
             String existTable = "EXISTS (SELECT * FROM sqlite_master WHERE tbl_name = "+"'"+_object.getClass().getSimpleName() +"'"+")";
             ResultSet result =  stmt.executeQuery(" SELECT "+ existTable);
             String exist = result.getString(existTable);
+            /* all filed was removed, noty the database to drop it */
 
                 if(exist.equals("1")) {
-                    return MemberAlter.alter(conn, stmt, sqlPragmaQuery, createQuery, dataMember, _object);
+                            if(dataMember.length() == 0){
+                            /* when remove all filed, we drop table */
+                                stmt.execute("DROP TABLE IF EXISTS "+_object.getClass().getSimpleName());
+                                return 1;
+                             }
+                       return MemberAlter.alter(conn, stmt, sqlPragmaQuery, createQuery, dataMember, _object);
+
                 } else {
                     try {
                         stmt.execute(createQuery);
                     }catch (SQLiteException e){
                         e.printStackTrace();
 
-                        if(e.getMessage().startsWith("[SQLITE_ERROR] SQL error or missing database")  ||  e.getErrorCode() == 1) {
+                        if(e.getMessage().contains("(incomplete input)")) {
+                            throw new SQLiteException("table was deleted from database \n remove ( @MakeTable ) from Class  "
+                                    +_object.getClass().getSimpleName() +  " to keep complete  or \n " +
+                                    "add one or more field as a column to create new Table "
+                                    ,e.getResultCode());
+                        }
+                        if(e.getMessage().startsWith("[SQLITE_ERROR] SQL error or missing database") ) {
                             throw new SQLiteException("check the condition of Column Constraint ( @Check (condition!) ) in Class "
                                     +_object.getClass().getSimpleName()
                                     ,e.getResultCode());
                         }
+
+
+
                     }
                 }
 
