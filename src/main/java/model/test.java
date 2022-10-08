@@ -20,14 +20,14 @@ public class test{
     String password;
 
 
- @additiveColumnConstraint
-    @SqliteColumn
-    String now;
+
+    @SqliteColumn(constraint = ConstraintType.NOTNULL)
+    boolean now;
 
 
-    @additiveColumnConstraint
+
     @SqliteColumn(constraint = ConstraintType.NOTNULL,defaultConstraint = 50.000)
-    int price;
+    String prices;
 
 
 

@@ -20,10 +20,13 @@ public class MemberAlter {
 
        try (ResultSet rs = stmt.executeQuery(sqlPragmaQuery)){
 
-               String[] codeClassInfo = dataMember.toString().replace("\n", "").split(",");
+          /* remove last char of string to execute correctly*/
+           String removeLastBract = dataMember.substring(0,dataMember.length()-1);
+           /* split the string and put in array to used as we need*/
+           String[] codeClassInfo = removeLastBract.replace("\n", "").split(",");
                _infoInCode.addAll(Arrays.asList(codeClassInfo));
 
-
+              /* get schema information from database*/
             while (rs.next()) {
                 Map<String, String> tableMap = new HashMap<>();
                 String nameCol = rs.getString("name");
@@ -41,14 +44,11 @@ public class MemberAlter {
             }
 
             conn.setAutoCommit(false);
-              // String[] codeColumnName;
-            int count;
 
+            int count;
             for (int forCounter = 0; forCounter < _infoInCode.size(); forCounter++) {
                  /*get column name and check it to avoid contain sequential characters issue */
                 String[]  codeColumnName = _infoInCode.get(forCounter).split(" ");
-                /*remove last character*/
-                String filed = _infoInCode.get(forCounter).substring(0,_infoInCode.get(forCounter).length()-1);
 
                     /* first loop for sorting data from database to check the all changes*/
                  count = 0;
@@ -115,46 +115,28 @@ public class MemberAlter {
                                     /*
                                      * refactor column data type */
 
+                             updateCreateSql.append(" DROP COLUMN ").append(_sortInfoInDataBase.get(forCounter).get("name"));
+                            stmt.executeUpdate(updateCreateSql.toString());
 
-                                    if (_infoInCode.get(forCounter).toUpperCase().contains("NOT NULL")) {
-
-                                        updateCreateSql.append(" DROP COLUMN ").append(_sortInfoInDataBase.get(forCounter).get("name"));
-                                        stmt.executeUpdate(updateCreateSql.toString());
-
+                                    if (_infoInCode.get(forCounter).toUpperCase().contains("NOT NULL")
+                                       && !_infoInCode.get(forCounter).toUpperCase().contains("DEFAULT")) {
                                         /*we can not alter table to add new column with NOT NULL constraint with set null value  */
-                                        if (!_infoInCode.get(forCounter).toUpperCase().contains("DEFAULT")) {
                                             updateCreateSql.setLength(0);
                                             updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
-                                                    .append("ADD ").append(filed)
+                                                    .append("ADD ").append(_infoInCode.get(forCounter))
                                                     .append(" ").append("DEFAULT ").append("0");
-
-
+                                                System.out.println(updateCreateSql);
                                             stmt.executeUpdate(updateCreateSql.toString());
                                             conn.commit();
 
                                         } else {
-                                            updateCreateSql.setLength(0);
+                                        updateCreateSql.setLength(0);
                                             updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
-                                                    .append("ADD ").append(filed);
-
+                                                    .append("ADD ").append(_infoInCode.get(forCounter));
 
                                             stmt.executeUpdate(updateCreateSql.toString());
                                             conn.commit();
-
-
-                                        }
-                                    } else {
-                                        updateCreateSql.append(" DROP COLUMN ").append(_sortInfoInDataBase.get(forCounter).get("name"));
-                                        stmt.executeUpdate(updateCreateSql.toString());
-                                        updateCreateSql.setLength(0);
-                                        updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
-                                                .append("ADD ").append(filed);
-
-                                        stmt.executeUpdate(updateCreateSql.toString());
-                                        conn.commit();
-                                    }
-
-
+                                            }
 
 
                                 }
@@ -173,28 +155,22 @@ public class MemberAlter {
                         stmt.executeUpdate(updateCreateSql.toString());
                         stmt.executeUpdate(createQuery);
                         conn.commit();
-                     } else {
-                        if (_infoInCode.get(forCounter).toUpperCase().contains("NOT NULL")) {
-                            /*we can not alter table to add new column with NOT NULL constraint with set null value  */
-                            if (!_infoInCode.get(forCounter).toUpperCase().contains("DEFAULT")) {
-                                updateCreateSql.append("ADD ").append(filed).append(" ")
-                                        .append("DEFAULT ").append("0");
-                                stmt.executeUpdate(updateCreateSql.toString());
-                                conn.commit();
-                            }
-                                    else {
-                                        updateCreateSql.append("ADD ").append(filed);
-                                        stmt.executeUpdate(updateCreateSql.toString());
-                                        conn.commit();
-                                    }
-
+                     } else if(_infoInCode.get(forCounter).toUpperCase().contains("NOT NULL")
+                               &&!_infoInCode.get(forCounter).toUpperCase().contains("DEFAULT")) {
+                        /*we can not alter table to add new column with NOT NULL constraint with set null value  */
+                            updateCreateSql.append("ADD ").append(_infoInCode.get(forCounter)).append(" ")
+                                    .append("DEFAULT ").append("0");
+                            stmt.executeUpdate(updateCreateSql.toString());
+                            conn.commit();
                         } else {
-                            updateCreateSql.append("ADD ").append(filed);
+                            updateCreateSql.append("ADD ").append(_infoInCode.get(forCounter));
                             stmt.executeUpdate(updateCreateSql.toString());
                             conn.commit();
                         }
+
+
                     }
-                     } else if (!_infoInCode.get(forCounter).toUpperCase().contains(_infoInDataBase.get(forCounter).get("name").toUpperCase())) {
+                      else if (!_infoInCode.get(forCounter).toUpperCase().contains(_infoInDataBase.get(forCounter).get("name").toUpperCase())) {
                           /*     * refactor column name */
                         updateCreateSql.append("RENAME ").append(_infoInDataBase.get(forCounter).get("name"))
                                 .append(" ").append("to ").append(codeColumnName[0]);
