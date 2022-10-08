@@ -5,7 +5,10 @@ import org.sqlite.SQLiteException;
 import services.creates.icreate.ICreate;
 
 import java.lang.reflect.Field;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 
 public class SqliteCreate<T> implements ICreate<T> {
 
@@ -42,33 +45,25 @@ public class SqliteCreate<T> implements ICreate<T> {
 
         }
 
-
+         /*builder create query command for tables creation*/
         createQuery = prefixCreateQuery + dataMember;
-       // System.out.println(createQuery);
-
-      /*___*/
-
-
-
-
-
-
         try (Connection conn = SqliteConnect.getConnect();
              Statement stmt = conn.createStatement()) {
 
+            /* check if table was exist in database or not*/
             String existTable = "EXISTS (SELECT * FROM sqlite_master WHERE tbl_name = "+"'"+_object.getClass().getSimpleName() +"'"+")";
             ResultSet result =  stmt.executeQuery(" SELECT "+ existTable);
             String exist = result.getString(existTable);
-            /* all filed was removed, noty the database to drop it */
 
                 if(exist.equals("1")) {
                             if(dataMember.length() == 0){
-                            /* when remove all filed, we drop table */
+                            /* when remove all Fields, we drop table */
                                 stmt.execute("DROP TABLE IF EXISTS "+_object.getClass().getSimpleName());
                                 return 1;
                              }
+                            /*method for setup changes have been done in code */
                        return MemberAlter.alter(conn, stmt, sqlPragmaQuery, createQuery, dataMember, _object);
-
+                      /*if not in database create new one*/
                 } else {
                     try {
                         stmt.execute(createQuery);
