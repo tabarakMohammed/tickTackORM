@@ -8,7 +8,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MemberAlter {
@@ -116,7 +120,7 @@ public class MemberAlter {
                                      * refactor column data type */
 
                              updateCreateSql.append(" DROP COLUMN ").append(_sortInfoInDataBase.get(forCounter).get("name"));
-                            stmt.executeUpdate(updateCreateSql.toString());
+                             stmt.executeUpdate(updateCreateSql.toString());
 
                                     if (_infoInCode.get(forCounter).toUpperCase().contains("NOT NULL")
                                        && !_infoInCode.get(forCounter).toUpperCase().contains("DEFAULT")) {
@@ -133,7 +137,6 @@ public class MemberAlter {
                                         updateCreateSql.setLength(0);
                                             updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
                                                     .append("ADD ").append(_infoInCode.get(forCounter));
-
                                             stmt.executeUpdate(updateCreateSql.toString());
                                             conn.commit();
                                             }
@@ -184,6 +187,7 @@ public class MemberAlter {
                             }
                      }
                 }
+
 
 
             }
