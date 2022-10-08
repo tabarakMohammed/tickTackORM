@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
- class MemberAlter {
+ class AlterMember {
 
-    static int alter(Connection  conn, Statement stmt,String sqlPragmaQuery ,String createQuery, StringBuilder dataMember, Object _object) throws SQLException {
+     protected static int alter(Connection  conn, Statement stmt,String sqlPragmaQuery ,String createQuery, StringBuilder dataMember, Object _object) throws SQLException {
         List<Map<String, String>> _infoInDataBase = new ArrayList<>();
         List<Map<String, String>> _sortInfoInDataBase = new ArrayList<>();
         List<String> _infoInCode = new ArrayList<>();

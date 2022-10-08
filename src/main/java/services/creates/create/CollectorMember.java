@@ -4,12 +4,12 @@ import services.creates.acreate.SqliteColumn;
 import services.creates.acreate.additiveColumnConstraint;
 import java.lang.reflect.Field;
 
-public class MemberOptions  {
+ class CollectorMember {
 
    final static StringBuilder filedType = new StringBuilder();
    final static StringBuilder constraint = new StringBuilder();
 
-    public static StringBuilder getMemberString(String dataType, Field _objectAttributes)  {
+    protected static StringBuilder getMemberString(String dataType, Field _objectAttributes)  {
         /* set table column type and other attributes depend on data type of class member */
 
         switch (dataType) {

@@ -30,11 +30,11 @@ public class SqliteCreate<T> implements ICreate<T> {
                 if (counter++ == objectAttributes.length - 1) {
                     /*put last member to database sql command*/
                     dataMember.append(_objectAttributes.getName()).append(" ").append(
-                            MemberOptions.getMemberString(_objectAttributes.getType().getSimpleName(), _objectAttributes)).append(')');
+                            CollectorMember.getMemberString(_objectAttributes.getType().getSimpleName(), _objectAttributes)).append(')');
                 } else {
                     /*Collect members for database sql command*/
                     dataMember.append(_objectAttributes.getName()).append(" ").append(
-                            MemberOptions.getMemberString(_objectAttributes.getType().getSimpleName(), _objectAttributes)
+                            CollectorMember.getMemberString(_objectAttributes.getType().getSimpleName(), _objectAttributes)
                     ).append(',').append('\n');
                 }
             } catch (NullPointerException e){
@@ -62,7 +62,7 @@ public class SqliteCreate<T> implements ICreate<T> {
                                 return 1;
                              }
                             /*method for setup changes have been done in code */
-                       return MemberAlter.alter(conn, stmt, sqlPragmaQuery, createQuery, dataMember, _object);
+                       return AlterMember.alter(conn, stmt, sqlPragmaQuery, createQuery, dataMember, _object);
                       /*if not in database create new one*/
                 } else {
                     try {
