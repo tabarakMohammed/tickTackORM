@@ -13,18 +13,22 @@ import java.sql.SQLException;
 public class SingleInsert<T> implements ISingleRowInsert<T> {
     @Override
     public int insertRow(T object) {
+        /* insert sql command query*/
         String sqlInsertStatement = "INSERT INTO " + object.getClass().getSimpleName() + "";
         Field[] objectAttributes = object.getClass().getDeclaredFields();
+        /* make sql command query for generic object*/
         sqlInsertStatement = sqlInsertStatement + preparedData.sqliteInsertQuery(objectAttributes);
 
         try {
-
+           /* singleton , open new connection to make sure there is no bottleneck  happen */
             new SqliteConnect();
-
             Connection conn = SqliteConnect.getConnect();
+            /*create new PreparedStatement object and inject it into the preparedData class
+             for ensure there is one object and single, to make our operations on it*/
             PreparedStatement _preparedStatement = conn.prepareStatement(sqlInsertStatement);
             preparedData _preparedData = new preparedData(_preparedStatement);
             _preparedData.setupStatement(object);
+
             int processCheck = _preparedStatement.executeUpdate();
             if (processCheck == 1) {
                 SqliteConnect.closeConnect();

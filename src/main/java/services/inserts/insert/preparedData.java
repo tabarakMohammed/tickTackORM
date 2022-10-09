@@ -3,6 +3,7 @@ package services.inserts.insert;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -17,7 +18,6 @@ public class preparedData {
     protected void setupStatement(Object object) throws SQLException {
 
         Field[] objectAttributes = object.getClass().getDeclaredFields();
-
         String _stringCheckType = "";
 
         int setInsertCount = 0;
@@ -40,26 +40,53 @@ public class preparedData {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-             /* checking the type of  member variable in object, to set it in prepared statement for storing in database  */
-            if (_objectAttributes.getType().isInstance(_stringCheckType)) {
-                _preparedStatement.setString(setInsertCount, _objectExecutor.toString());
-            } else if (_objectAttributes.getType().isPrimitive()) {
-                /*switch use for single datatype*/
-                switch (_objectAttributes.getType().toString()) {
-                    case "int": {
-                        _preparedStatement.setInt(setInsertCount, Integer.parseInt(_objectExecutor.toString()));
+            if (_objectExecutor != null) {
+                /* checking the type of  member variable in object, to set it in prepared statement for storing in database  */
+                if (_objectAttributes.getType().isInstance(_stringCheckType)) {
+
+                    _preparedStatement.setString(setInsertCount, _objectExecutor.toString());
+                } else if (_objectAttributes.getType().isPrimitive()) {
+                    /*switch use for single datatype, Primitive*/
+                    switch (_objectAttributes.getType().toString()) {
+                        case "int": {
+                            _preparedStatement.setInt(setInsertCount, Integer.parseInt(_objectExecutor.toString()));
+                        }
+                        break;
+                        case "long": {
+                            _preparedStatement.setLong(setInsertCount, Long.parseLong(_objectExecutor.toString()));
+                        }
+                        break;
+                        case "boolean": {
+                            _preparedStatement.setBoolean(setInsertCount, Boolean.parseBoolean(_objectExecutor.toString()));
+                        }
+                        break;
+                        case "byte": {
+                            _preparedStatement.setFloat(setInsertCount, Float.parseFloat(_objectExecutor.toString()));
+                        }
+                        break;
+                        case "float": {
+                            _preparedStatement.setByte(setInsertCount, Byte.parseByte(_objectExecutor.toString()));
+                        }
+                        break;
+                        case "double": {
+                            _preparedStatement.setDouble(setInsertCount, Double.parseDouble(_objectExecutor.toString()));
+                        }
+                        break;
+                        case "blob": {
+                            _preparedStatement.setBlob(setInsertCount, (Blob) (_objectExecutor));
+                        }
+                        break;
+
+                        default:
+                            throw new NullPointerException("data type insert does not supported !! ");
+
+
                     }
-                    break;
-                    case "boolean": {
-                        _preparedStatement.setBoolean(setInsertCount, Boolean.parseBoolean(_objectExecutor.toString()));
-                    }
-                    break;
+
                 }
 
             }
-
         }
-
 
     }
 
@@ -71,27 +98,29 @@ public class preparedData {
 
         int i = 0;
         for (Field _objectAttributes : objectAttributes) {
-            if (_objectAttributes.getName().equalsIgnoreCase("id")) {
                 /*skip Id*/
-            } else try {
-                if (i++ == objectAttributes.length - 2) {
-                    /*Last Iteration*/
-                    dataMember.append(_objectAttributes.getName()).append(')');
-                    valuesForSql.append('?').append(')');
-                } else {
-                    /*Collect members for database sql command*/
-                    dataMember.append(_objectAttributes.getName()).append(',');
-                    valuesForSql.append('?').append(',');
+            if (!_objectAttributes.getName().equalsIgnoreCase("id")) {
+
+                try {
+                    if (i++ == objectAttributes.length - 2) {
+                        /*Last Iteration*/
+                        dataMember.append(_objectAttributes.getName()).append(')');
+                        valuesForSql.append('?').append(')');
+                    } else {
+                        /*Collect members for database sql command*/
+                        dataMember.append(_objectAttributes.getName()).append(',');
+                        valuesForSql.append('?').append(',');
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    returnValue = "0";
+                    return returnValue;
+
                 }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                returnValue = "0";
-                return returnValue;
-
             }
         }
-        returnValue = "(" + dataMember + valuesForSql;
+        returnValue = "(" + dataMember.append(valuesForSql);
         return returnValue;
     }
 
