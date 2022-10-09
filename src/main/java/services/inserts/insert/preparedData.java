@@ -14,7 +14,7 @@ public class preparedData {
         this._preparedStatement = preparedStatement_;
     }
 
-    protected PreparedStatement getData(Object object) throws SQLException {
+    protected PreparedStatement setupStatement(Object object) throws SQLException {
 
         Field[] objectAttributes = object.getClass().getDeclaredFields();
 

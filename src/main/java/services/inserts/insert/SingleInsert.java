@@ -23,10 +23,10 @@ public class SingleInsert<T> implements ISingleRowInsert<T> {
 
             Connection conn = SqliteConnect.getConnect();
             PreparedStatement _preparedStatement = conn.prepareStatement(sqlInsertStatement);
-            preparedData on = new preparedData(_preparedStatement);
-
-            int ch = on.getData(object).executeUpdate();
-            if (ch != 0) {
+            preparedData _preparedData = new preparedData(_preparedStatement);
+            _preparedData.setupStatement(object);
+            int processCheck = _preparedStatement.executeUpdate();
+            if (processCheck == 1) {
                 SqliteConnect.closeConnect();
                 return 1;
             } else {
