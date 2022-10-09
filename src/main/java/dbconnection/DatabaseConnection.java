@@ -1,7 +1,7 @@
-package DBConnection;
+package dbconnection;
 
 
-import DBConnection.DBEstablishe.SqliteConnect;
+import dbconnection.establishe.SqliteConnect;
 import org.reflections.Reflections;
 import services.creates.create.SqliteCreate;
 import services.creates.acreate.MakeTable;

@@ -30,68 +30,25 @@ public class test{
     String prices;
 
 
+    public String getPrices() {return prices;}
 
+    public String getUsername() {return username;}
 
+    public String getPassword() {return password;}
 
+    public boolean getNow() {return now;}
 
-//
-//    public String getGlory() {
-//        return glory;
-//    }
-//
-//    public String getCoco() {
-//        return coco;
-//    }
-//
-//    public String getNow() {
-//        return now;
-//    }
-//
-//    public int getBoby() {
-//        return boby;
-//    }
-//
-//    public int getPrice() {
-//        return price;
-//    }
-//
-//    public void setGlory(String glory) {
-//        this.glory = glory;
-//    }
-//
-//    public void setCoco(String coco) {
-//        this.coco = coco;
-//    }
-//
-//    public void setNow(String now) {
-//        this.now = now;
-//    }
-//
-//    public void setBoby(int boby) {
-//        this.boby = boby;
-//    }
-//
-//    public void setPrice(int price) {
-//        this.price = price;
-//    }
-//
-//    public int getId() {return id;}
-//
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setId(int id) {this.id = id;}
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
+    public void setNow(boolean now) {this.now = now;}
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPrices(String prices) {
+        this.prices = prices;
+    }
 }
