@@ -20,37 +20,38 @@ public class preparedData {
 
         String _stringCheckType = "";
 
-        int count = 0;
+        int setInsertCount = 0;
         Method getMethods;
         Object _objectExecutor = null;
         for (Field _objectAttributes : objectAttributes) {
-
+            /*skip id for insertion because Auto Increment*/
             if (_objectAttributes.getName().equalsIgnoreCase("id")) {
                 continue;
             } else
 
-                count = count + 1;
+                setInsertCount++;
 
             try {
-
+                /*get "get" method from object for data usage*/
                 getMethods = object.getClass().getDeclaredMethod("get" + _objectAttributes.getName().substring(0, 1).toUpperCase() + _objectAttributes.getName().substring(1));
+                /*call get method and execute */
                 _objectExecutor = getMethods.invoke(object);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+             /* checking the type of  member variable in object, to set it in prepared statement for storing in database  */
             if (_objectAttributes.getType().isInstance(_stringCheckType)) {
-                _preparedStatement.setString(count, _objectExecutor.toString());
+                _preparedStatement.setString(setInsertCount, _objectExecutor.toString());
             } else if (_objectAttributes.getType().isPrimitive()) {
                 /*switch use for single datatype*/
                 switch (_objectAttributes.getType().toString()) {
                     case "int": {
-                        _preparedStatement.setInt(count, Integer.parseInt(_objectExecutor.toString()));
+                        _preparedStatement.setInt(setInsertCount, Integer.parseInt(_objectExecutor.toString()));
                     }
                     break;
                     case "boolean": {
-                        _preparedStatement.setBoolean(count, Boolean.parseBoolean(_objectExecutor.toString()));
+                        _preparedStatement.setBoolean(setInsertCount, Boolean.parseBoolean(_objectExecutor.toString()));
                     }
                     break;
                 }
@@ -59,7 +60,6 @@ public class preparedData {
 
         }
 
-    //    return _preparedStatement;
 
     }
 
