@@ -8,13 +8,13 @@ import java.sql.SQLException;
 
 public class preparedData {
 
-    static PreparedStatement _preparedStatement;
+     PreparedStatement _preparedStatement;
 
     protected preparedData(PreparedStatement preparedStatement_) {
         this._preparedStatement = preparedStatement_;
     }
 
-    protected PreparedStatement setupStatement(Object object) throws SQLException {
+    protected void setupStatement(Object object) throws SQLException {
 
         Field[] objectAttributes = object.getClass().getDeclaredFields();
 
@@ -59,7 +59,7 @@ public class preparedData {
 
         }
 
-        return _preparedStatement;
+    //    return _preparedStatement;
 
     }
 
