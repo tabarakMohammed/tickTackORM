@@ -20,10 +20,10 @@ public class SingleInsert<T> implements ISingleRowInsert<T> {
         sqlInsertStatement = sqlInsertStatement + preparedData.sqliteInsertQuery(objectAttributes);
 
         try {
-            Connection conn = SqliteConnect.getConnect();
+            Connection _connection = SqliteConnect.getConnect();
             /*create new PreparedStatement object and inject it into the preparedData class
              for ensure there is one object and single, to make our operations on it*/
-            PreparedStatement _preparedStatement = conn.prepareStatement(sqlInsertStatement);
+            PreparedStatement _preparedStatement = _connection.prepareStatement(sqlInsertStatement);
             preparedData _preparedData = new preparedData(_preparedStatement);
             _preparedData.setupStatement(object);
 

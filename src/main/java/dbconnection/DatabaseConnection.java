@@ -14,14 +14,13 @@ import java.lang.reflect.Constructor;
 public class DatabaseConnection implements IConnection {
     @Override
     public void sqliteConnect(String sqlUrl, String PackageNameForModels) {
+          SqliteConnect.setConnectionUrl(sqlUrl);
 
-        new  SqliteConnect(sqlUrl);
-
+          ICreate<Object> _sqliteCreate = new SqliteCreate<>();
         Reflections _reflections = new Reflections(PackageNameForModels);
         for (Class<?> _annotatedClass : _reflections.getTypesAnnotatedWith(MakeTable.class)) {
-            ICreate _sqliteCreate = new SqliteCreate();
             try {
-                Constructor _constructor = _annotatedClass.getConstructor();
+                Constructor<?> _constructor = _annotatedClass.getConstructor();
                 _sqliteCreate.newTable(_constructor.newInstance());
             } catch (Exception e ){
                 e.printStackTrace();
