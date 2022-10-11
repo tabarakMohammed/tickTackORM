@@ -20,8 +20,6 @@ public class MultiInsert<T> implements IMultiRowInsert<T> {
         int _i = 0;
         int _return;
         try {
-            new SqliteConnect();
-
             Connection conn = SqliteConnect.getConnect();
             PreparedStatement _preparedStatement = conn.prepareStatement(sqlInsertStatement);
             preparedData _preparedData = new preparedData(_preparedStatement);

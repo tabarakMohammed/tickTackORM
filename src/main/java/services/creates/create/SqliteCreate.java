@@ -47,26 +47,26 @@ public class SqliteCreate<T> implements ICreate<T> {
 
          /*builder create query command for tables creation*/
         createQuery = prefixCreateQuery + dataMember;
-        try (Connection conn = SqliteConnect.getConnect();
-             Statement stmt = conn.createStatement()) {
+        try (Connection _connection = SqliteConnect.getConnect();
+             Statement _statement = _connection.createStatement()) {
 
             /* check if table was exist in database or not*/
             String existTable = "EXISTS (SELECT * FROM sqlite_master WHERE tbl_name = "+"'"+_object.getClass().getSimpleName() +"'"+")";
-            ResultSet result =  stmt.executeQuery(" SELECT "+ existTable);
+            ResultSet result =  _statement.executeQuery(" SELECT "+ existTable);
             String exist = result.getString(existTable);
 
                 if(exist.equals("1")) {
                             if(dataMember.length() == 0){
                             /* when remove all Fields, we drop table */
-                                stmt.execute("DROP TABLE IF EXISTS "+_object.getClass().getSimpleName());
+                                _statement.execute("DROP TABLE IF EXISTS "+_object.getClass().getSimpleName());
                                 return 1;
                              }
                             /*method for setup changes have been done in code */
-                       return AlterMember.alter(conn, stmt, sqlPragmaQuery, createQuery, dataMember, _object);
+                       return AlterMember.alter(_connection, _statement, sqlPragmaQuery, createQuery, dataMember, _object);
                       /*if not in database create new one*/
                 } else {
                     try {
-                        stmt.execute(createQuery);
+                        _statement.execute(createQuery);
                     }catch (SQLiteException e){
                         e.printStackTrace();
 

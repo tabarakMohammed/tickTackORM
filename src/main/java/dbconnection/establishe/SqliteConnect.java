@@ -5,45 +5,36 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SqliteConnect {
-    private static Connection conn = null;
+    private static Connection connection = null;
     static String  url;
 
-   public static void setConnectionUrl(String _url){
-        url=_url;
-    }
-    public SqliteConnect()   {
 
-
+    public SqliteConnect(String _url)   {
         try {
+            url=_url;
             Class.forName("org.sqlite.JDBC").newInstance();
-            conn = DriverManager.getConnection(url);
+            connection = DriverManager.getConnection(url);
             System.out.println("Connection to SQLite has been established.");
         } catch (SQLException e) {
-            System.out.println("one catch ... > " + e.getMessage());
+           e.printStackTrace();
             System.exit(1);
         }catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            System.out.println("one catch ... > " + e.getMessage());
+            e.printStackTrace();
             System.exit(1);
         }
     }
 
-    public static Connection getConnect()  {
-
-        if (conn == null) {
-
-        new SqliteConnect();
-
-        }
-        return conn;
+    public static Connection getConnect() {
+        if (connection != null) {
+            new SqliteConnect(url);
+       }
+        return connection;
     }
 
     public static void closeConnect() throws SQLException {
 
-        if (conn != null) {
-
-            conn.close();
-            System.out.println("connction clossed");
-
+        if (connection != null) {
+            connection.close();
         }
 
     }

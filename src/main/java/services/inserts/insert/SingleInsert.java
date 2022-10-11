@@ -20,8 +20,6 @@ public class SingleInsert<T> implements ISingleRowInsert<T> {
         sqlInsertStatement = sqlInsertStatement + preparedData.sqliteInsertQuery(objectAttributes);
 
         try {
-           /* singleton , open new connection to make sure there is no bottleneck  happen */
-            new SqliteConnect();
             Connection conn = SqliteConnect.getConnect();
             /*create new PreparedStatement object and inject it into the preparedData class
              for ensure there is one object and single, to make our operations on it*/
