@@ -119,15 +119,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 
-
                 try {
-
-
-                  {
-
-
                     if (_infoInCode.get(forCounter).contains(_sortInfoInDataBase.get(forCounter).get("name"))) {
-                        /* all Ok Same Name enter  to next data type*/
+                        /* all Ok, Same Name enter,  to next data type*/
                         if (_infoInCode.get(forCounter).toUpperCase().contains(_sortInfoInDataBase.get(forCounter).get("typeCol").toUpperCase())) {
                             /* all Ok Same data type */
                             if (_infoInCode.get(forCounter).toUpperCase().contains("PRIMARY KEY")) {
@@ -196,10 +190,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
                         }
                     }
-
-
-
-                }
 
 
                 } catch (IndexOutOfBoundsException ex) {
