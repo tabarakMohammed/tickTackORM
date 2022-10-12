@@ -8,16 +8,19 @@ import services.inserts.iinsert.IMultiRowInsert;
 import services.inserts.iinsert.ISingleRowInsert;
 import services.inserts.insert.MultiInsert;
 import services.inserts.insert.SingleInsert;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TictackTest {
-
+    @Test
+    public void createTables()  {
+        DatabaseConnection dc = new DatabaseConnection();
+        dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite", "model");
+        assertTrue("always",  true);
+    }
     @Disabled("Disabled until createTable is up!")
     @Test
     public void createTable() throws Exception {
@@ -32,7 +35,7 @@ public class TictackTest {
     public void insertSingleRowIntoTable()   {
         DatabaseConnection dc = new DatabaseConnection();
         dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite", "model");
-        ISingleRowInsert<test> _singleRowInsert = new SingleInsert();
+        ISingleRowInsert<test> _singleRowInsert = new SingleInsert<>();
         test _test = new test();
         _test.setUsername("test");
         _test.setPassword("_test1223^");
@@ -44,19 +47,10 @@ public class TictackTest {
     @Test
     public void insertMultiRowIntoTable()   {
         DatabaseConnection dc = new DatabaseConnection();
-        dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite", "model");
-         IMultiRowInsert<test> _multiInsert = new MultiInsert();
+         dc.sqliteConnect("jdbc:sqlite:D:/backup/test.sqlite", "model");
+         IMultiRowInsert<test> _multiInsert = new MultiInsert<>();
 
-      //  List<test> objectList = new ArrayList<>(Arrays.asList(new test[4]));
-//        AtomicInteger counter = new AtomicInteger(1);
-//        objectList.forEach((itemAdd) ->{
-//                  itemAdd.setUsername("name " + counter.get());
-//                  itemAdd.setPassword(counter.get() + "$password$");
-//                  itemAdd.setNow(false);
-//                  itemAdd.setPrices(String.valueOf(150 * counter.get()));
-//                  counter.getAndIncrement();
-//              });
-          List<test> objectList = new ArrayList<>();
+         List<test> objectList = new ArrayList<>();
                 test _test = new test();
                 _test.setUsername("multi03");
                 _test.setPassword("12s6ss9u");
