@@ -2,7 +2,8 @@ import dbconnection.ConfigurationSchema;
 import dbconnection.DatabaseConnection;
 import dbconnection.IConfigurationSchema;
 import dbconnection.IConnection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 
 import static org.mockito.Mockito.*;
 
@@ -22,4 +23,7 @@ public class ConnectionTest {
         verify(configurationSchema,times(1))
                 .setupSchema("model");
     }
+
+
+
 }
