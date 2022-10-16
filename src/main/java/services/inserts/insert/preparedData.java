@@ -61,11 +61,12 @@ public class preparedData {
                         }
                         break;
                         case "byte": {
-                            _preparedStatement.setFloat(setInsertCount, Float.parseFloat(_objectExecutor.toString()));
+                            _preparedStatement.setByte(setInsertCount, Byte.parseByte(_objectExecutor.toString()));
+
                         }
                         break;
                         case "float": {
-                            _preparedStatement.setByte(setInsertCount, Byte.parseByte(_objectExecutor.toString()));
+                            _preparedStatement.setFloat(setInsertCount, Float.parseFloat(_objectExecutor.toString()));
                         }
                         break;
                         case "double": {
