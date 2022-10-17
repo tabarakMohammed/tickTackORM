@@ -4,7 +4,7 @@ import services.fetchs.ifetch.IFetchById;
 
 import java.util.List;
 
-public class FetchById<T> extends Fetch implements IFetchById<T>  {
+public class FetchById<T> extends Fetch<T> implements IFetchById<T>  {
     T _object;
     public FetchById(T object){
         this._object = object;
