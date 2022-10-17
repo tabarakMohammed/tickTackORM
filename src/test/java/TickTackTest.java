@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import services.creates.create.SqliteCreate;
 import services.creates.icreate.ICreate;
+import services.fetchs.fetch.FetchAll;
 import services.fetchs.fetch.FetchById;
+import services.fetchs.ifetch.IFetchAll;
 import services.fetchs.ifetch.IFetchById;
 import services.inserts.iinsert.IMultiRowInsert;
 import services.inserts.iinsert.ISingleRowInsert;
@@ -77,12 +79,10 @@ public class TickTackTest {
     }
 
  @Test
-    public void fetch()   {
-
+    public void fetchAll()   {
      test _test = new test();
-     IFetchById<test> _fetchById = new FetchById(_test);
-      long id = 1;
-     _fetchById.found(id).forEach(x-> System.out.println(
+     IFetchAll<test> _TestIFetchAll = new FetchAll<>(_test);
+     _TestIFetchAll.foundAll().forEach(x-> System.out.println(
              x.getUsername()
              +"-"+
              x.getPassword()
@@ -92,25 +92,22 @@ public class TickTackTest {
              x.getNow()
      ));
 
-//     IFetchAll<test> _TestIFetchAll = new FetchAll(_test);
-//     _TestIFetchAll.foundAll().forEach(x-> System.out.println(
-//             x.getUsername()
-//             +"-"+
-//             x.getPassword()
-//             +"-"+
-//             x.getPrices()
-//             +"-"+
-//             x.getNow()
-//     ));
-
-//      long id = 1;
-//      int nom = 1;
-//      double dob = 1.5;
-//      boolean bpl = true;
-//      String userName = "ahmed";
-//     assertEquals(null,  _fetchById.found(userName));
 
     }
-
+    @Test
+    public void fetchById(){
+        test _test = new test();
+        IFetchById<test> _fetchById = new FetchById<>(_test);
+        long id = 1;
+        _fetchById.found(id).forEach(x-> System.out.println(
+                x.getUsername()
+                        +"-"+
+                        x.getPassword()
+                        +"-"+
+                        x.getPrices()
+                        +"-"+
+                        x.getNow()
+        ));
+    }
 
 }

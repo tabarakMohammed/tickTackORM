@@ -10,21 +10,14 @@ import java.util.List;
 
 public class Fetch<T> implements IFetch<T> {
 
- T object;
-
-
- public Fetch(T bo)  {
-  this.object = bo;
- };
-
  @Override
- public List<T> found(String sqlSelect) {
+ public List<T> start(T object,String sqlSelect) {
 
   try {
    Connection _connection = SqliteConnect.getConnect();
    Statement _statement = _connection.createStatement();
    ResultSet _resultSet = _statement.executeQuery(sqlSelect);
-   PreData _PreData = new PreData(_resultSet);
+   PreData<T> _PreData = new PreData<>(_resultSet);
 
    return _PreData.setupStatement(object);
     }

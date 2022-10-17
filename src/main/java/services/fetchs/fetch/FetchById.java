@@ -11,10 +11,11 @@ public class FetchById<T> implements IFetchById<T> {
         this._object = object;
     }
     @Override
-    public List<T> found(Object element) {
-        String sql = "select * from " +_object.getClass().getSimpleName()+ " where id = "+element+"";
-        IFetch<T> _TestIFetchAll = new Fetch(_object);
-        _TestIFetchAll.found(sql);
-        return  _TestIFetchAll.found(sql);
+    public List<T> found(long id) {
+        List<T> getData;
+        String sql = "select * from " +_object.getClass().getSimpleName()+ " where id = "+id+"";
+        IFetch<T> _fetch = new Fetch<>();
+         getData = _fetch.start(_object,sql);
+        return  getData;
     }
 }

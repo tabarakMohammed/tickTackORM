@@ -11,11 +11,11 @@ public class FetchAll<T> implements IFetchAll<T> {
         this._object = object;
     }
     @Override
-    public List foundAll() {
+    public List<T> foundAll() {
+        List<T> getData;
         String sql = "Select * from "+_object.getClass().getSimpleName()+"";
-
-        IFetch<T> _FetchAll = new Fetch(_object);
-        _FetchAll.found(sql);
-        return  _FetchAll.found(sql);
+        IFetch<T> _fetch = new Fetch<>();
+        getData  = _fetch.start(_object,sql);
+        return  getData;
     }
 }
