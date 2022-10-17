@@ -16,7 +16,7 @@ public class PreData<T> {
         this._resultSet = resultSet_;
     }
 
-    protected  List<T>  setupStatement(T object) throws SQLException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected  List<T>  setupResult(T object) throws SQLException, InvocationTargetException, IllegalAccessException, InstantiationException {
          List<T> allData = new ArrayList<>();
          Field[] objectAttributes = object.getClass().getDeclaredFields();
          String _stringCheckType = "";

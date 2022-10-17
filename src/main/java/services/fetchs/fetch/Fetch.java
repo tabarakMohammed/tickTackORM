@@ -19,7 +19,7 @@ public class Fetch<T> implements IFetch<T> {
    ResultSet _resultSet = _statement.executeQuery(sqlSelect);
    PreData<T> _PreData = new PreData<>(_resultSet);
 
-   return _PreData.setupStatement(object);
+   return _PreData.setupResult(object);
     }
     catch (Exception e) {
       e.printStackTrace();

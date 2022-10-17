@@ -1,11 +1,11 @@
 package services.fetchs.fetch;
 
-import services.fetchs.ifetch.IFetch;
+
 import services.fetchs.ifetch.IFetchAll;
 
 import java.util.List;
 
-public class FetchAll<T> implements IFetchAll<T> {
+public class FetchAll<T>  extends Fetch implements IFetchAll<T> {
     T _object;
     public FetchAll(T object){
         this._object = object;
@@ -14,8 +14,7 @@ public class FetchAll<T> implements IFetchAll<T> {
     public List<T> foundAll() {
         List<T> getData;
         String sql = "Select * from "+_object.getClass().getSimpleName()+"";
-        IFetch<T> _fetch = new Fetch<>();
-        getData  = _fetch.start(_object,sql);
+        getData  = start(_object,sql);
         return  getData;
     }
 }
