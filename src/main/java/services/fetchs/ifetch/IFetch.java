@@ -1,4 +1,7 @@
 package services.fetchs.ifetch;
 
-public interface IFetch {
+import java.util.List;
+
+public interface IFetch<T> {
+    List<T> found(String sqlSelect);
 }
