@@ -11,12 +11,15 @@ import services.creates.create.SqliteCreate;
 import services.creates.icreate.ICreate;
 import services.fetchs.fetch.FetchAll;
 import services.fetchs.fetch.FetchById;
+import services.fetchs.fetch.FetchByQuery;
 import services.fetchs.ifetch.IFetchAll;
 import services.fetchs.ifetch.IFetchById;
+import services.fetchs.ifetch.IFetchByQuery;
 import services.inserts.iinsert.IMultiRowInsert;
 import services.inserts.iinsert.ISingleRowInsert;
 import services.inserts.insert.MultiInsert;
 import services.inserts.insert.SingleInsert;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +95,16 @@ public class TickTackTest {
              x.getNow()
      ));
 
+//     TestRepository<test> _testRepo = new TestServices<>(_test);
+//     _testRepo.foundAll().forEach(x-> System.out.println(
+//             x.getUsername()
+//             +"-"+
+//             x.getPassword()
+//             +"-"+
+//             x.getPrices()
+//             +"-"+
+//             x.getNow()
+//     ));
 
     }
     @Test
@@ -108,6 +121,23 @@ public class TickTackTest {
                         +"-"+
                         x.getNow()
         ));
+    }
+
+    @Test
+    public void fetchByQuery()  {
+        test _test = new test();
+        IFetchByQuery<test> _FetchByQuery = new FetchByQuery<>(_test);
+        String sql = "Select * from test";
+       _FetchByQuery.found(sql).forEach(x-> System.out.println(
+                x.getUsername()
+                        +"-"+
+                        x.getPassword()
+                        +"-"+
+                        x.getPrices()
+                        +"-"+
+                        x.getNow()
+        ));
+
     }
 
 }

@@ -22,6 +22,7 @@ public class PreData<T> {
          String _stringCheckType = "";
 
 
+
         while (_resultSet.next()) {
          T _object = (T) object.getClass().newInstance();
             for (Field _objectAttributes : objectAttributes) {
@@ -31,10 +32,9 @@ public class PreData<T> {
 
 
 
-                        /* checking the type of  member variable in object, to set it in prepared statement for storing in database  */
                         if (_objectAttributes.getType().isInstance(_stringCheckType) &&
                                 method.getName().toUpperCase().contains(_objectAttributes.getName().toUpperCase()) ) {
-                     //   System.out.println(_resultSet.getString(_objectAttributes.getName()));
+
                            method.invoke(_object, _resultSet.getString(_objectAttributes.getName()));
 
                         } else if (_objectAttributes.getType().isPrimitive() &&
