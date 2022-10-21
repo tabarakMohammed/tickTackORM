@@ -2,21 +2,22 @@ package model;
 
 import services.creates.acreate.*;
 import services.creates.acreate.list.ConstraintType;
+import services.creates.acreate.list.ConstraintTypePlus;
 
 @MakeTable
 public class test{
 
 
-    @additiveColumnConstraint( constraint = ConstraintType.PRIMARY_KEY)
-    @SqliteColumn
+    @additiveColumnConstraint()
+    @SqliteColumn(constraint = ConstraintType.PRIMARY_KEY)
     int id;
 
     @SqliteColumn(constraint = ConstraintType.NOTNULL)
-    @additiveColumnConstraint(constraint = ConstraintType.UNIQUE)
+    @additiveColumnConstraint(constraint = ConstraintTypePlus.UNIQUE)
     String username;
 
     @SqliteColumn(defaultConstraint = 1500)
-    @additiveColumnConstraint(constraint = ConstraintType.NOTNULL)
+    @additiveColumnConstraint(constraint = ConstraintTypePlus.NOTNULL)
     String password;
 
 
@@ -29,6 +30,9 @@ public class test{
     @SqliteColumn(constraint = ConstraintType.NOTNULL,defaultConstraint = 50.000)
     String prices;
 
+    public int getId() {
+        return id;
+    }
 
     public String getPrices() {return prices;}
 
@@ -37,6 +41,10 @@ public class test{
     public String getPassword() {return password;}
 
     public boolean getNow() {return now;}
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setNow(boolean now) {this.now = now;}
 

@@ -1,11 +1,11 @@
 package services.creates.acreate;
 
-import services.creates.acreate.list.ConstraintType;
+import services.creates.acreate.list.ConstraintTypePlus;
 
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface additiveColumnConstraint {
-  ConstraintType constraint() default ConstraintType.empty;
+  ConstraintTypePlus constraint() default ConstraintTypePlus.empty;
 }

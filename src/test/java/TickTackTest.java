@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import services.creates.create.SqliteCreate;
 import services.creates.icreate.ICreate;
+import services.deletes.delete.DeleteRepository;
+import services.deletes.idelete.IDeleteRepository;
 import services.fetchs.fetch.FoundRepository;
 import services.inserts.iinsert.IMultiRowInsert;
 import services.inserts.iinsert.ISingleRowInsert;
@@ -81,6 +83,8 @@ public class TickTackTest {
      test _test = new test();
      FoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
      _testFoundRepository.foundAll().forEach(x-> System.out.println(
+             x.getId()
+                     +"-"+
              x.getUsername()
                      +"-"+
                      x.getPassword()
@@ -98,6 +102,8 @@ public class TickTackTest {
         FoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
         long id = 1;
         _testFoundRepository.found(id).forEach(x-> System.out.println(
+                x.getId()
+                        +"-"+
                 x.getUsername()
                         +"-"+
                         x.getPassword()
@@ -124,6 +130,15 @@ public class TickTackTest {
         ));
 
 
+
+    }
+
+    @Test
+    public void Delete(){
+        test _test = new test();
+        IDeleteRepository<test> _TestDeleteRepository = new DeleteRepository<>(_test);
+        long id = 7;
+        assertEquals(1,  _TestDeleteRepository.removeById(id));
 
     }
 

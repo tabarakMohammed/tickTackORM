@@ -11,7 +11,7 @@ public enum ConstraintType {
  PRIMARY_KEY("PRIMARY KEY");
 
 
- private String displayName ;
+ private final String displayName ;
 
   ConstraintType(String displayName) {
   this.displayName = displayName;

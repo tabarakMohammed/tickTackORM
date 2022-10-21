@@ -1,7 +1,5 @@
 package services.fetchs.fetch;
-
 import services.fetchs.ifetch.IFoundRepository;
-
 import java.util.List;
 
 public class FoundRepository<T> extends Fetch<T> implements IFoundRepository<T> {
@@ -19,8 +17,8 @@ public class FoundRepository<T> extends Fetch<T> implements IFoundRepository<T> 
 
     @Override
     public List<T> found(long id) {
-        String sql = "select * from " +_object.getClass().getSimpleName()+ " where id = "+id+"";
-        return  start(_object,sql);
+        FetchById<T> _tFetchById = new FetchById<>(_object);
+        return start(_object, _tFetchById.sqlSelect(id));
     }
 
     @Override
