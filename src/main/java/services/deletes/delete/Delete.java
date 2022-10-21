@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class Delete<T> implements IDelete<T> {
+public class Delete implements IDelete {
     @Override
     public int beginRemove(String sqlDelete) {
         try{

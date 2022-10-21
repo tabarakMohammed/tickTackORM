@@ -1,5 +1,5 @@
 package services.deletes.idelete;
 
-public interface IDelete<T> {
+public interface IDelete {
     int beginRemove(String sql);
 }
