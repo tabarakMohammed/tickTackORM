@@ -24,13 +24,15 @@ public class PreData<T> {
 
 
         while (_resultSet.next()) {
+
+            /*new Instance for object to store data in it and put them in List*/
          T _object = (T) object.getClass().newInstance();
-            for (Field _objectAttributes : objectAttributes) {
+
+         for (Field _objectAttributes : objectAttributes) {
+
+             /* call setter methods from object to store data into it */
                 for (Method method : object.getClass().getMethods()) {
                     if (method.getName().startsWith("set")) {
-
-
-
 
                         if (_objectAttributes.getType().isInstance(_stringCheckType) &&
                                 method.getName().toUpperCase().contains(_objectAttributes.getName().toUpperCase()) ) {

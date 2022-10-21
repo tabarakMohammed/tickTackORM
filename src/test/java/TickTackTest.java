@@ -9,12 +9,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import services.creates.create.SqliteCreate;
 import services.creates.icreate.ICreate;
-import services.fetchs.fetch.FetchAll;
-import services.fetchs.fetch.FetchById;
-import services.fetchs.fetch.FetchByQuery;
-import services.fetchs.ifetch.IFetchAll;
-import services.fetchs.ifetch.IFetchById;
-import services.fetchs.ifetch.IFetchByQuery;
+import services.fetchs.fetch.FoundRepository;
 import services.inserts.iinsert.IMultiRowInsert;
 import services.inserts.iinsert.ISingleRowInsert;
 import services.inserts.insert.MultiInsert;
@@ -84,35 +79,25 @@ public class TickTackTest {
  @Test
     public void fetchAll()   {
      test _test = new test();
-     IFetchAll<test> _TestIFetchAll = new FetchAll<>(_test);
-     _TestIFetchAll.foundAll().forEach(x-> System.out.println(
+     FoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
+     _testFoundRepository.foundAll().forEach(x-> System.out.println(
              x.getUsername()
-             +"-"+
-             x.getPassword()
-             +"-"+
-             x.getPrices()
-             +"-"+
-             x.getNow()
+                     +"-"+
+                     x.getPassword()
+                     +"-"+
+                     x.getPrices()
+                     +"-"+
+                     x.getNow()
      ));
 
-//     TestRepository<test> _testRepo = new TestServices<>(_test);
-//     _testRepo.foundAll().forEach(x-> System.out.println(
-//             x.getUsername()
-//             +"-"+
-//             x.getPassword()
-//             +"-"+
-//             x.getPrices()
-//             +"-"+
-//             x.getNow()
-//     ));
 
     }
     @Test
     public void fetchById(){
         test _test = new test();
-        IFetchById<test> _fetchById = new FetchById<>(_test);
+        FoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
         long id = 1;
-        _fetchById.found(id).forEach(x-> System.out.println(
+        _testFoundRepository.found(id).forEach(x-> System.out.println(
                 x.getUsername()
                         +"-"+
                         x.getPassword()
@@ -126,9 +111,9 @@ public class TickTackTest {
     @Test
     public void fetchByQuery()  {
         test _test = new test();
-        IFetchByQuery<test> _FetchByQuery = new FetchByQuery<>(_test);
+        FoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
         String sql = "Select * from test";
-       _FetchByQuery.found(sql).forEach(x-> System.out.println(
+        _testFoundRepository.foundByQuery(sql).forEach(x-> System.out.println(
                 x.getUsername()
                         +"-"+
                         x.getPassword()
@@ -137,6 +122,8 @@ public class TickTackTest {
                         +"-"+
                         x.getNow()
         ));
+
+
 
     }
 
