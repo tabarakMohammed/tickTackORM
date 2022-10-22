@@ -28,13 +28,13 @@ public class test{
 
 
     @SqliteColumn(constraint = ConstraintType.NOTNULL,defaultConstraint = 50.000)
-    String prices;
+    double prices;
 
     public int getId() {
         return id;
     }
 
-    public String getPrices() {return prices;}
+    public double getPrices() {return prices;}
 
     public String getUsername() {return username;}
 
@@ -56,7 +56,7 @@ public class test{
         this.password = password;
     }
 
-    public void setPrices(String prices) {
+    public void setPrices(double prices) {
         this.prices = prices;
     }
 }

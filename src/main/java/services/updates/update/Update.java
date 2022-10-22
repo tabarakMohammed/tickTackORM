@@ -14,8 +14,6 @@ public class Update<T> implements IUpdate<T> {
     @Override
     public int update(T object,String SqlUpdate) {
 
-      System.out.println( SqlUpdate);
-
         try {
             Connection _connection = SqliteConnect.getConnect();
             PreparedStatement _preparedStatement = _connection.prepareStatement(SqlUpdate);

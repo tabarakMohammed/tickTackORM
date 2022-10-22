@@ -104,6 +104,9 @@ public class PreparedUpdateData<T> {
         StringBuilder dataMember = new StringBuilder(" UPDATE " + object.getClass().getSimpleName()).append(" SET ");
         String idFiled = " ";
 
+        Method getMethods;
+        Object _objectExecutor;
+
 
         int i = 0;
         for (Field _objectAttributes : objectAttributes) {
@@ -115,6 +118,24 @@ public class PreparedUpdateData<T> {
                  }
 
                 try {
+
+                    /*get "get" method from object for data usage*/
+                    getMethods = object.getClass().getDeclaredMethod("get" + _objectAttributes.getName().substring(0, 1).toUpperCase() + _objectAttributes.getName().substring(1));
+                    /*call get method and execute */
+                    _objectExecutor = getMethods.invoke(object);
+                    /*Default Values for * String object
+                    * long, int, double, float*/
+                    if(_objectExecutor == null || getMethods.invoke(object).equals(0L)
+                       || getMethods.invoke(object).equals(0)
+                       || getMethods.invoke(object).equals(0.0f)
+                       || getMethods.invoke(object).equals(0.0d)
+                       || getMethods.invoke(object).equals(0.0d)
+
+                    ){
+                        i++;
+                        continue;
+                    }
+
                     if (i++ == objectAttributes.length - 2) {
                         /*Last Iteration*/
                         dataMember.append(_objectAttributes.getName()).append(" = ? ");
