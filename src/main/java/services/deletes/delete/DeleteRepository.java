@@ -20,4 +20,10 @@ public class DeleteRepository<T> extends Delete implements IDeleteRepository<T> 
         }
         return status;
     }
+
+
+    @Override
+    public int removeByQuery(String sqlCommand) {
+        return beginRemove(sqlCommand);
+    }
 }

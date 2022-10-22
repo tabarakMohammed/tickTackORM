@@ -1,6 +1,8 @@
 package services.inserts.insert;
 
 
+import services.creates.acreate.SqliteColumn;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Blob;
@@ -25,7 +27,8 @@ public class preparedData {
         Object _objectExecutor = null;
         for (Field _objectAttributes : objectAttributes) {
             /*skip id for insertion because Auto Increment*/
-            if (_objectAttributes.getName().equalsIgnoreCase("id")) {
+            if (_objectAttributes.getAnnotation(SqliteColumn.class) != null &&
+                    _objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY")) {
                 continue;
             } else
 
@@ -100,7 +103,10 @@ public class preparedData {
         int i = 0;
         for (Field _objectAttributes : objectAttributes) {
                 /*skip Id*/
-            if (!_objectAttributes.getName().equalsIgnoreCase("id")) {
+            if (_objectAttributes.getAnnotation(SqliteColumn.class) != null &&
+                    _objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY")) {
+                continue;
+            }
 
                 try {
                     if (i++ == objectAttributes.length - 2) {
@@ -120,7 +126,7 @@ public class preparedData {
 
                 }
             }
-        }
+
         returnValue = "(" + dataMember.append(valuesForSql);
         return returnValue;
     }

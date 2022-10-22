@@ -12,10 +12,13 @@ import services.creates.icreate.ICreate;
 import services.deletes.delete.DeleteRepository;
 import services.deletes.idelete.IDeleteRepository;
 import services.fetchs.fetch.FoundRepository;
+import services.fetchs.ifetch.IFoundRepository;
 import services.inserts.iinsert.IMultiRowInsert;
 import services.inserts.iinsert.ISingleRowInsert;
 import services.inserts.insert.MultiInsert;
 import services.inserts.insert.SingleInsert;
+import services.updates.update.UpdateRepository;
+import services.updates.update.iupdate.IUpdateRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +49,10 @@ public class TickTackTest {
         ISingleRowInsert<test> _singleRowInsert = new SingleInsert<>();
 
         test _test = new test();
-        _test.setUsername("test");
-        _test.setPassword("_test1223^");
+        _test.setUsername("test2");
+        _test.setPassword("_test12232^");
         _test.setNow(true);
-        _test.setPrices("50,000");
+        _test.setPrices("51,000");
 
         assertEquals(1,  _singleRowInsert.insertRow(_test));
     }
@@ -81,7 +84,7 @@ public class TickTackTest {
  @Test
     public void fetchAll()   {
      test _test = new test();
-     FoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
+     IFoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
      _testFoundRepository.foundAll().forEach(x-> System.out.println(
              x.getId()
                      +"-"+
@@ -99,9 +102,9 @@ public class TickTackTest {
     @Test
     public void fetchById(){
         test _test = new test();
-        FoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
+        IFoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
         long id = 1;
-        _testFoundRepository.found(id).forEach(x-> System.out.println(
+        _testFoundRepository.foundById(id).forEach(x-> System.out.println(
                 x.getId()
                         +"-"+
                 x.getUsername()
@@ -114,10 +117,11 @@ public class TickTackTest {
         ));
     }
 
+
     @Test
     public void fetchByQuery()  {
         test _test = new test();
-        FoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
+        IFoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
         String sql = "Select * from test";
         _testFoundRepository.foundByQuery(sql).forEach(x-> System.out.println(
                 x.getUsername()
@@ -139,6 +143,27 @@ public class TickTackTest {
         IDeleteRepository<test> _TestDeleteRepository = new DeleteRepository<>(_test);
         long id = 7;
         assertEquals(1,  _TestDeleteRepository.removeById(id));
+
+    }
+ @Test
+    public void update(){
+        test _test = new test();
+        _test.setPrices("300");
+        _test.setNow(false);
+        _test.setPassword("123456");
+        _test.setUsername("testUpdate");
+        IUpdateRepository<test> _TestDeleteRepository = new UpdateRepository<>(_test);
+        assertEquals(1,  _TestDeleteRepository.updateById(5));
+
+    }
+ @Test
+    public void updateBySqlCommand(){
+          test _test = new test();
+         _test.setPassword("555564");
+        IUpdateRepository<test> _TestDeleteRepository = new UpdateRepository<>(_test);
+        String sqlCommand= "update test set password = ? where id = 6";
+
+        assertEquals(1,  _TestDeleteRepository.updateBySqlCommand(sqlCommand));
 
     }
 
