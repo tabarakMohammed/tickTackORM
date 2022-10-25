@@ -4,6 +4,8 @@ import services.creates.acreate.SqliteColumn;
 import services.creates.acreate.additiveColumnConstraint;
 import java.lang.reflect.Field;
 
+/**
+ * convert model object fields to database column, collect metadata*/
  class CollectorMember {
 
    final static StringBuilder filedType = new StringBuilder();

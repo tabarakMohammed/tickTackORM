@@ -1,4 +1,7 @@
 package services.fetchs.ifetch;
 
-public interface IFetch {
+import java.util.List;
+/**core of Fetching data from data base */
+public interface IFetch<T> {
+    List<T> start(T object,String sqlSelect);
 }
