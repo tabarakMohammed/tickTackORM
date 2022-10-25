@@ -1,4 +1,6 @@
 package services.creates.acreate.list;
+/**
+ * list of specific adding more attributes for annotations of columns*/
 
 public enum ConstraintTypePlus {
     empty(""),

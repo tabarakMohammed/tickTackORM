@@ -8,7 +8,8 @@ import java.lang.reflect.Method;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+/**
+ * setup data binding for inserting data into database*/
 public class preparedData {
 
      PreparedStatement _preparedStatement;

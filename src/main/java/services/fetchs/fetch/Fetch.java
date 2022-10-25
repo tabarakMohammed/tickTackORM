@@ -18,7 +18,7 @@ public class Fetch<T> implements IFetch<T> {
    Statement _statement = _connection.createStatement();
    ResultSet _resultSet = _statement.executeQuery(sqlSelect);
 
-   PreData<T> _PreData = new PreData<>(_resultSet);
+   PreparedFetchingData<T> _PreData = new PreparedFetchingData<>(_resultSet);
 
    return _PreData.setupResult(object);
     }

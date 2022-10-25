@@ -10,7 +10,12 @@ import services.updates.iupdate.IUpdateRepository;
 import services.updates.update.UpdateRepository;
 
 import java.util.List;
-
+/**
+ * implementation the FUIDRepositoryInterface that
+ * used to usage all the DQL and DML sample services of the library
+ * Fitch,Update,Insert,Delete
+ * call it in your app
+ * */
 public class FUIDRepository<T> implements FUIDRepositoryInterface<T>{
     T object;
    public FUIDRepository(T object_){

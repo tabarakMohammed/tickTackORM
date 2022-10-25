@@ -6,7 +6,8 @@ import services.deletes.idelete.IDelete;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+/**
+ * implementation the core removing engin */
 public class Delete implements IDelete {
     @Override
     public int beginRemove(String sqlDelete) {

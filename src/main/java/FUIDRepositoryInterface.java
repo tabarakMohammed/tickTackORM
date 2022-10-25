@@ -1,5 +1,9 @@
 import java.util.List;
 
+/**
+ * used to usage all the DQL and DML sample services of the library
+ * Fitch,Update,Insert,Delete
+ * */
 public interface FUIDRepositoryInterface<T> {
 
     int insertSingleRow(T object);

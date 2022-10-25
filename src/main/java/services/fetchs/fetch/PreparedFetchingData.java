@@ -8,11 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-public class PreData<T> {
+/**
+ * setup data binding for getting data from database*/
+public class PreparedFetchingData<T> {
     ResultSet _resultSet;
 
-    protected PreData(ResultSet resultSet_) {
+    protected PreparedFetchingData(ResultSet resultSet_) {
         this._resultSet = resultSet_;
     }
 
