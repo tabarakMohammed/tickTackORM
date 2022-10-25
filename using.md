@@ -14,7 +14,7 @@ for creating new tales and columns :
    configurationSchema.setupSchema("object model paackge name");
 ```
 ________________________________________________________________________________________
-# general usage 
+## general usage 
 
 > create new crud and fetch countiner of specific  object :
   ```
@@ -38,21 +38,21 @@ ________________________________________________________________________________
     _TestRepository_modelObject.updateBySqlCommand(sqlCommand)
  ``` 
  ____________________________________________________________________________
-# specific usage
+## specific usage
   
- ## 1. Inserting 
+ **  1. Inserting 
  
-       - for one row :
-  
-                ```
+  - for one row :
+
+                
           ISingleRowInsert<modelObject> _singleRowInsert = new SingleInsert<>();
 
                    modelObject _modelObject = new modelObject();
 
           _singleRowInsert.insertRow(_modelObject)
-             ```
-       - for more than one row :
-              ```
+             
+  - for more than one row :
+              
               IMultiRowInsert<modelObject> _multiInsert = new MultiInsert<>();
 
                       modelObject _modelObject = new modelObject();
@@ -60,71 +60,71 @@ ________________________________________________________________________________
                       list_modelObject.add(_modelObject)
 
               _multiInsert.insertMultiRow(list_modelObject)
-              ```
+              
   
- ## 2. Fetching 
+ **  2. Fetching 
              
-       - get All data :
-            ```
+   - get All data :
+            
                       modelObject _modelObject = new modelObject();
              IFoundRepository<modelObject> _modelObject_FoundRepository = new FoundRepository<>(_modelObject);
             _modelObject_FoundRepository.foundAll()
-            ```
-      - get data by using id :
-              ```
+            
+   - get data by using id :
+              
                         long id = 1
                         modelObject _modelObject = new modelObject();
              IFoundRepository<modelObject> _modelObject_FoundRepository = new FoundRepository<>(_modelObject);
              _modelObject_FoundRepository.foundById(id)
-              ```
-      - get data by using sqlite command :
-               ``` 
+              
+   - get data by using sqlite command :
+                
                     String sqlCommand = "Select * from test";
                     modelObject _modelObject = new modelObject();
              IFoundRepository<modelObject> _modelObject_FoundRepository = new FoundRepository<>(_modelObject);
             _modelObject_FoundRepository.foundBySqlCommand(sqlCommand)
-          ```
+          
   
- ## 3. removing 
+ **  3. removing 
   
-       - using ID :
-          ```
+   - using ID :
+          
                     long id = 1
                     modelObject _modelObject = new modelObject();
           IDeleteRepository<modelObject> _modelObject_DeleteRepository = new DeleteRepository<>(_modelObject);
           _modelObject_DeleteRepository.removeById(id)
-          ```
-      - using sqlite command : 
-          ```
+          
+   - using sqlite command : 
+          
                     String sqlCommand = "DELETE FROM artists_backup WHERE artistid = 1;"
                     modelObject _modelObject = new modelObject();
           IDeleteRepository<modelObject> _modelObject_DeleteRepository = new DeleteRepository<>(_modelObject);
           _modelObject_DeleteRepository.removeBySqlCommand(sqlCommand)
-          ```
- ## 4. updating 
+          
+ **  4. updating 
   
-       - using ID :
-            ```
+   - using ID :
+            
                       long id = 1
                       modelObject _modelObject = new modelObject();
               IUpdateRepository<modelObject> _modelObject_UpdateRepository = new UpdateRepository<>(_modelObject);
               _modelObject_DeleteRepository.updateById(id)
             ```
-      - using sqlite command :
-            ```  
+   - using sqlite command :
+              
 
                       String sqlCommand = "update test set password = ? where id = 6"
                       modelObject _modelObject = new modelObject();
               IUpdateRepository<modelObject> _modelObject_UpdateRepository = new UpdateRepository<>(_modelObject);
               _modelObject_DeleteRepository.updateBySqlCommand(sqlCommand)
-            ```
+            
  ________________________________________ _________________________________
-#  for creating specific table :
-          ```    
+###  for creating specific table :
+              
               modelObject _modelObject = new modelObject();
       ICreate<modelObject> _sqliteCreate = new SqliteCreate<>();
       _sqliteCreate.newTable(_modelObject)
-      ```
+      
   
   
   
