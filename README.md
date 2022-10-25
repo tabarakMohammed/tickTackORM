@@ -1,14 +1,14 @@
 # tickTackORM
 java Library for sqlite databsae (Object Relational Mapping) -- begin simple 
 
-How to use 
+### How to use 
 
 First make connection whith database sqlite file :
   ```
    IConnection dc = new DatabaseConnection();
    dc.sqliteConnect("jdbc:sqlite:Path To database File");
   ```  
-for creating new tales and columns : 
+for creating new tables and columns : 
 ```
    IConfigurationSchema configurationSchema = new ConfigurationSchema();
    configurationSchema.setupSchema("object model paackge name");
