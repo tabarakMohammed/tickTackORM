@@ -1,7 +1,7 @@
 package services.updates.update;
 
 import dbconnection.establishe.SqliteConnect;
-import services.updates.update.iupdate.IUpdate;
+import services.updates.iupdate.IUpdate;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
