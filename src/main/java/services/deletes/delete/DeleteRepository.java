@@ -23,7 +23,7 @@ public class DeleteRepository<T> extends Delete implements IDeleteRepository<T> 
 
 
     @Override
-    public int removeByQuery(String sqlCommand) {
+    public int removeBySqlCommand(String sqlCommand) {
         return beginRemove(sqlCommand);
     }
 }

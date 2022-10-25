@@ -24,7 +24,7 @@ public class FoundRepository<T> extends Fetch<T> implements IFoundRepository<T> 
     }
 
     @Override
-    public List<T> foundByQuery(String query) {
-        return  start(_object,query);
+    public List<T> foundBySqlCommand(String sqlCommand) {
+        return  start(_object,sqlCommand);
     }
 }

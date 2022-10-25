@@ -6,6 +6,6 @@ public interface IFoundRepository<T>  {
 
     List<T> foundAll();
     List<T> foundById(long id);
-    List<T> foundByQuery(String query);
+    List<T> foundBySqlCommand(String sqlCommand);
 
 }

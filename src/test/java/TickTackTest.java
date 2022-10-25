@@ -17,8 +17,8 @@ import services.inserts.iinsert.IMultiRowInsert;
 import services.inserts.iinsert.ISingleRowInsert;
 import services.inserts.insert.MultiInsert;
 import services.inserts.insert.SingleInsert;
+import services.updates.iupdate.IUpdateRepository;
 import services.updates.update.UpdateRepository;
-import services.updates.update.iupdate.IUpdateRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +125,7 @@ public class TickTackTest {
         test _test = new test();
         IFoundRepository<test> _testFoundRepository = new FoundRepository<>(_test);
         String sql = "Select * from test";
-        _testFoundRepository.foundByQuery(sql).forEach(x -> System.out.println(
+        _testFoundRepository.foundBySqlCommand(sql).forEach(x -> System.out.println(
                 x.getUsername()
                         + "-" +
                         x.getPassword()
@@ -166,6 +166,20 @@ public class TickTackTest {
         String sqlCommand = "update test set password = ? where id = 6";
 
         assertEquals(1, _TestDeleteRepository.updateBySqlCommand(sqlCommand));
+
+    }
+  @Test
+    public void allContainer() {
+        test _test = new test();
+      FUIDRepositoryInterface<test> _TestRepository = new FUIDRepository<>(_test);
+      _TestRepository.foundAll().forEach(
+              (item)->{
+                  System.out.println(item.getId());
+                  System.out.println(item.getUsername());
+                  System.out.println(item.getPassword());
+                  System.out.println(item.getNow());
+              }
+      );
 
     }
 

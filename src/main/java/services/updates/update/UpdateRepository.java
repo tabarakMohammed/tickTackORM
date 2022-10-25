@@ -1,8 +1,7 @@
 package services.updates.update;
+import services.updates.iupdate.IUpdateRepository;
 
-import services.updates.update.iupdate.IUpdateRepository;
-
-public class UpdateRepository<T> extends Update<T> implements IUpdateRepository<T>{
+public class UpdateRepository<T> extends Update<T> implements IUpdateRepository<T> {
 
     T _object;
 
