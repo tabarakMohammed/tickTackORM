@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
+/**
+ * this class using to apple the changes on table when making change in the model object*/
  class AlterMember {
 
      protected static int alter(Connection  _connection, Statement _statement,String sqlPragmaQuery ,String createQuery, StringBuilder dataMember, Object _object) throws SQLException {

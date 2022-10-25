@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.SQLException;
 
+/**implementation: creation table and apple changes on existing table */
 public class SqliteCreate<T> implements ICreate<T> {
 
 

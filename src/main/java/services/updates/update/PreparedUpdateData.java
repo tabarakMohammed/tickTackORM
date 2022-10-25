@@ -1,5 +1,4 @@
-package services.inserts.insert;
-
+package services.updates.update;
 
 import services.creates.acreate.SqliteColumn;
 
@@ -7,19 +6,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
+
 import java.sql.SQLException;
-/**
- * setup data binding for inserting data into database*/
-public class preparedData {
 
-     PreparedStatement _preparedStatement;
+public class PreparedUpdateData<T> {
 
-    protected preparedData(PreparedStatement preparedStatement_) {
+    PreparedStatement _preparedStatement;
+
+    protected PreparedUpdateData(PreparedStatement  preparedStatement_ ) {
         this._preparedStatement = preparedStatement_;
     }
 
-    protected void setupStatement(Object object) throws SQLException {
-
+    protected void setupStatement(T object,String UpdateFields) throws SQLException {
         Field[] objectAttributes = object.getClass().getDeclaredFields();
         String _stringCheckType = "";
 
@@ -32,6 +30,10 @@ public class preparedData {
                     _objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY")) {
                 continue;
             } else
+
+                if(!UpdateFields.contains(_objectAttributes.getName())) {
+                    continue;
+                }
 
                 setInsertCount++;
 
@@ -95,29 +97,53 @@ public class preparedData {
 
     }
 
-    protected static String sqliteInsertQuery(Field[] objectAttributes) {
 
+    protected static String sqliteUpdateQuery(Object object)  {
+        Field[] objectAttributes = object.getClass().getDeclaredFields();
         String returnValue;
-        StringBuilder dataMember = new StringBuilder();
-        StringBuilder valuesForSql = new StringBuilder(" VALUES(");
+        StringBuilder dataMember = new StringBuilder(" UPDATE " + object.getClass().getSimpleName()).append(" SET ");
+        String idFiled = " ";
+
+        Method getMethods;
+        Object _objectExecutor;
+
 
         int i = 0;
         for (Field _objectAttributes : objectAttributes) {
-                /*skip Id*/
+            /*skip Id*/
             if (_objectAttributes.getAnnotation(SqliteColumn.class) != null &&
-                    _objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY")) {
-                continue;
-            }
+                 _objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY")) {
+                     idFiled = _objectAttributes.getName();
+                    continue;
+                 }
 
                 try {
+
+                    /*get "get" method from object for data usage*/
+                    getMethods = object.getClass().getDeclaredMethod("get" + _objectAttributes.getName().substring(0, 1).toUpperCase() + _objectAttributes.getName().substring(1));
+                    /*call get method and execute */
+                    _objectExecutor = getMethods.invoke(object);
+                    /*Default Values for * String object
+                    * long, int, double, float*/
+                    if(_objectExecutor == null || getMethods.invoke(object).equals(0L)
+                       || getMethods.invoke(object).equals(0)
+                       || getMethods.invoke(object).equals(0.0f)
+                       || getMethods.invoke(object).equals(0.0d)
+                       || getMethods.invoke(object).equals(0.0d)
+
+                    ){
+                        i++;
+                        continue;
+                    }
+
                     if (i++ == objectAttributes.length - 2) {
                         /*Last Iteration*/
-                        dataMember.append(_objectAttributes.getName()).append(')');
-                        valuesForSql.append('?').append(')');
+                        dataMember.append(_objectAttributes.getName()).append(" = ? ");
+
                     } else {
                         /*Collect members for database sql command*/
-                        dataMember.append(_objectAttributes.getName()).append(',');
-                        valuesForSql.append('?').append(',');
+                        dataMember.append(_objectAttributes.getName()).append(" = ? ").append(',');
+
                     }
 
                 } catch (Exception e) {
@@ -126,11 +152,14 @@ public class preparedData {
                     return returnValue;
 
                 }
-            }
 
-        returnValue = "(" + dataMember.append(valuesForSql);
+        }
+        returnValue = " " +  dataMember.append(" where ").append(idFiled).append(" = ");
         return returnValue;
     }
+
+
+
 
 
 }
