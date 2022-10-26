@@ -21,6 +21,7 @@ public class FetchById<T> {
 
         objectField = Arrays.stream(_object.getClass().getDeclaredFields()).
                 filter(field -> field.getAnnotation(SqliteColumn.class) != null &&
+                        field.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY AUTOINCREMENT") ||
                         field.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY"))
                 .collect(Collectors.toList());
 
