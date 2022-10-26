@@ -3,7 +3,8 @@ java Library for sqlite databsae (Object Relational Mapping) -- begin simple
 
 ### How to use 
 
-#using maven 
+# using maven (https://central.sonatype.dev/artifact/io.github.tabarakmohammed/ticktackorm/0-1-1-beta/overview)
+
       ```
       <dependency>
           <groupId>io.github.tabarakmohammed</groupId>
