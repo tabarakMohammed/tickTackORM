@@ -9,7 +9,7 @@ public class test{
 
 
     @additiveColumnConstraint()
-    @SqliteColumn(constraint = ConstraintType.PRIMARY_KEY)
+    @SqliteColumn(constraint = ConstraintType.PRIMARY_KEY_AUTOINCREMENT)
     int id;
 
     @SqliteColumn(constraint = ConstraintType.NOTNULL)
@@ -20,12 +20,8 @@ public class test{
     @additiveColumnConstraint(constraint = ConstraintTypePlus.NOTNULL)
     String password;
 
-
-
     @SqliteColumn(constraint = ConstraintType.NOTNULL)
     boolean now;
-
-
 
     @SqliteColumn(constraint = ConstraintType.NOTNULL,defaultConstraint = 50.000)
     double prices;

@@ -21,13 +21,14 @@ public class DeleteById<T> {
         List<Field> objectField;
         objectField = Arrays.stream(_object.getClass().getDeclaredFields()).
                 filter(field->field.getAnnotation(SqliteColumn.class) != null &&
+                        field.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY AUTOINCREMENT")||
                         field.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY"))
                 .collect(Collectors.toList());
 
         if( !objectField.get(0).getName().isEmpty()){
 
             sqlDelete="DELETE FROM " + _object.getClass().getSimpleName() + " WHERE " + objectField.get(0).getName() + " = " + id + "";
-            System.out.println(sqlDelete);
+
         } else {
             sqlDelete = "";
         }

@@ -27,7 +27,7 @@ public class PreparedUpdateData<T> {
         for (Field _objectAttributes : objectAttributes) {
             /*skip id for insertion because Auto Increment*/
             if (_objectAttributes.getAnnotation(SqliteColumn.class) != null &&
-                    _objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY")) {
+                    _objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY AUTOINCREMENT")) {
                 continue;
             } else
 
@@ -107,15 +107,18 @@ public class PreparedUpdateData<T> {
         Method getMethods;
         Object _objectExecutor;
 
-
+        int dataLength = objectAttributes.length;
         int i = 0;
         for (Field _objectAttributes : objectAttributes) {
             /*skip Id*/
-            if (_objectAttributes.getAnnotation(SqliteColumn.class) != null &&
-                 _objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY")) {
-                     idFiled = _objectAttributes.getName();
+            if (_objectAttributes.getAnnotation(SqliteColumn.class) != null ) {
+                if (_objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY AUTOINCREMENT")) {
+                    dataLength = dataLength - 2;
                     continue;
-                 }
+                } else if (_objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName().equals("PRIMARY KEY")) {
+                    dataLength = dataLength - 1;
+                }
+            }
 
                 try {
 
@@ -136,7 +139,7 @@ public class PreparedUpdateData<T> {
                         continue;
                     }
 
-                    if (i++ == objectAttributes.length - 2) {
+                    if (i++ == dataLength) {
                         /*Last Iteration*/
                         dataMember.append(_objectAttributes.getName()).append(" = ? ");
 
