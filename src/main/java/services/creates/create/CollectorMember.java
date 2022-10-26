@@ -63,8 +63,8 @@ import java.lang.reflect.Field;
                 constraint.append(' ').append(_objectAttributes.getAnnotation(SqliteColumn.class).constraint().displayName());
                 return filedType.append("integer").append(' ').append(constraint);
 
-
             case "Long":
+            case "long":
 
                 if (_objectAttributes.getAnnotation(SqliteColumn.class) == null) {
                     throw new NullPointerException();
@@ -85,6 +85,7 @@ import java.lang.reflect.Field;
                 return filedType.append("BIGINT").append(' ').append(constraint);
 
             case "Byte":
+            case "byte":
                 if (_objectAttributes.getAnnotation(SqliteColumn.class) == null) {
                     throw new NullPointerException();
                 }

@@ -50,11 +50,11 @@ public class TickTackTest {
         ISingleRowInsert<test> _singleRowInsert = new SingleInsert<>();
 
         test _test = new test();
-        _test.setUsername("test2");
+        _test.setUsername("test22");
         _test.setPassword("_test12232^");
         _test.setNow(true);
         _test.setPrices(51.000);
-
+        _test.setId(1);
         assertEquals(1, _singleRowInsert.insertRow(_test));
     }
 
@@ -142,7 +142,7 @@ public class TickTackTest {
     public void Delete() {
         test _test = new test();
         IDeleteRepository<test> _TestDeleteRepository = new DeleteRepository<>(_test);
-        long id = 7;
+        long id = 2;
         assertEquals(1, _TestDeleteRepository.removeById(id));
 
     }
@@ -153,8 +153,8 @@ public class TickTackTest {
         _test.setPrices(300.0);
         _test.setNow(false);
         _test.setPassword("tabarak Not Password");
-        IUpdateRepository<test> _TestDeleteRepository = new UpdateRepository<>(_test);
-        assertEquals(1, _TestDeleteRepository.updateById(5));
+        IUpdateRepository<test> _TestUpdateRepository = new UpdateRepository<>(_test);
+        assertEquals(1, _TestUpdateRepository.updateById(1));
 
     }
 
@@ -162,10 +162,10 @@ public class TickTackTest {
     public void updateBySqlCommand() {
         test _test = new test();
         _test.setPassword("555564");
-        IUpdateRepository<test> _TestDeleteRepository = new UpdateRepository<>(_test);
-        String sqlCommand = "update test set password = ? where id = 6";
+        IUpdateRepository<test> _TestUpdateRepository = new UpdateRepository<>(_test);
+        String sqlCommand = "update test set password = ? where id = 1";
 
-        assertEquals(1, _TestDeleteRepository.updateBySqlCommand(sqlCommand));
+        assertEquals(1, _TestUpdateRepository.updateBySqlCommand(sqlCommand));
 
     }
   @Test

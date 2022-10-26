@@ -165,30 +165,38 @@ import java.util.concurrent.atomic.AtomicInteger;
 
                             /*
                              * refactor column data type */
-                            updateCreateSql.setLength(0);
-                            updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
-                                    .append(" DROP COLUMN ").append(_sortInfoInDataBase.get(forCounter).get("name"));
-                            _statement.executeUpdate(updateCreateSql.toString());
-
-                            if (_infoInCode.get(forCounter).toUpperCase().contains("NOT NULL")
-                                    && !_infoInCode.get(forCounter).toUpperCase().contains("DEFAULT")) {
-                                /*we can not alter table to add new column with NOT NULL constraint with set null value  */
+                            if (_infoInCode.get(forCounter).toUpperCase().contains("PRIMARY KEY")) {
                                 updateCreateSql.setLength(0);
-                                updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
-                                        .append("ADD ").append(_infoInCode.get(forCounter))
-                                        .append(" ").append("DEFAULT ").append("0");
+                                updateCreateSql.append("DROP TABLE  ").append(_object.getClass().getSimpleName());
                                 _statement.executeUpdate(updateCreateSql.toString());
+                                _statement.executeUpdate(createQuery);
                                 _connection.commit();
-
                             } else {
                                 updateCreateSql.setLength(0);
                                 updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
-                                        .append("ADD ").append(_infoInCode.get(forCounter));
+                                        .append(" DROP COLUMN ").append(_sortInfoInDataBase.get(forCounter).get("name"));
                                 _statement.executeUpdate(updateCreateSql.toString());
-                                _connection.commit();
+
+                                if (_infoInCode.get(forCounter).toUpperCase().contains("NOT NULL")
+                                        && !_infoInCode.get(forCounter).toUpperCase().contains("DEFAULT")) {
+                                    /*we can not alter table to add new column with NOT NULL constraint with set null value  */
+                                    updateCreateSql.setLength(0);
+                                    updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
+                                            .append("ADD ").append(_infoInCode.get(forCounter))
+                                            .append(" ").append("DEFAULT ").append("0");
+                                    _statement.executeUpdate(updateCreateSql.toString());
+                                    _connection.commit();
+
+                                } else {
+                                    updateCreateSql.setLength(0);
+                                    updateCreateSql.append("ALTER TABLE  ").append(_object.getClass().getSimpleName()).append("\n")
+                                            .append("ADD ").append(_infoInCode.get(forCounter));
+                                    _statement.executeUpdate(updateCreateSql.toString());
+                                    _connection.commit();
+                                }
+
+
                             }
-
-
                         }
                     }
 
