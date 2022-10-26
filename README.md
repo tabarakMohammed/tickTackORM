@@ -3,6 +3,15 @@ java Library for sqlite databsae (Object Relational Mapping) -- begin simple
 
 ### How to use 
 
+#using maven 
+      ```
+      <dependency>
+          <groupId>io.github.tabarakmohammed</groupId>
+          <artifactId>ticktackorm</artifactId>
+          <version>0-1-1-beta</version>
+      </dependency>
+      ```
+
 First make connection whith database sqlite file :
   ```
    IConnection dc = new DatabaseConnection();
