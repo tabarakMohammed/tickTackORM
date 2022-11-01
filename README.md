@@ -23,7 +23,24 @@ for creating new tables and columns :
    IConfigurationSchema configurationSchema = new ConfigurationSchema();
    configurationSchema.setupSchema("object model paackge name");
 ```
-________________________________________________________________________________________
+____________________
+ First make Object class 
+  
+  use this @MakeTable annotation to create table 
+  then in this class define variables 
+  and use @SqliteColumn annotation for create columns
+  
+  @SqliteColumn has specifi parameters for define the attribute or Properties of columns in the table
+ ````
+ NOTNULL,UNIQUE,FOREIGN_KEY,PRIMARY_KEY,PRIMARY_KEY_AUTOINCREMENT.
+ 
+ by example:
+ @SqliteColumn(constraint = ConstraintType.NOTNULL)
+ ````
+ you can follow this link to see the example of object definintion
+  [The Example](https://github.com/tabarakMohammed/tickTackORM/blob/main/src/test/java/model/test.java)
+  
+  ____________________________________________________________________
 ## general usage 
 
 > create new crud and fetch countiner of specific  object :
@@ -50,7 +67,7 @@ ________________________________________________________________________________
  ____________________________________________________________________________
 ## specific usage
   
- **  1. Inserting 
+ **1. Inserting 
  
   - for one row :
 
@@ -72,7 +89,7 @@ ________________________________________________________________________________
               _multiInsert.insertMultiRow(list_modelObject)
               
   
- **  2. Fetching 
+ **2. Fetching 
              
    - get All data :
             
@@ -95,7 +112,7 @@ ________________________________________________________________________________
             _modelObject_FoundRepository.foundBySqlCommand(sqlCommand)
           
   
- **  3. removing 
+ **3. removing 
   
    - using ID :
           
@@ -111,7 +128,7 @@ ________________________________________________________________________________
           IDeleteRepository<modelObject> _modelObject_DeleteRepository = new DeleteRepository<>(_modelObject);
           _modelObject_DeleteRepository.removeBySqlCommand(sqlCommand)
           
- **  4. updating 
+ **4. updating 
   
    - using ID :
             
@@ -134,8 +151,6 @@ ________________________________________________________________________________
               modelObject _modelObject = new modelObject();
       ICreate<modelObject> _sqliteCreate = new SqliteCreate<>();
       _sqliteCreate.newTable(_modelObject)
-      
-  
-  
-  
+
+
   
