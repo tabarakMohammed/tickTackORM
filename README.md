@@ -30,7 +30,7 @@ ____________________
   then in this class define variables 
   and use @SqliteColumn annotation for create columns
   
-  @SqliteColumn has specifi parameters for define the attribute or Properties of columns in the table
+  @SqliteColumn has specific parameters for define the attribute or Properties of columns in the table
  ````
  NOTNULL,UNIQUE,FOREIGN_KEY,PRIMARY_KEY,PRIMARY_KEY_AUTOINCREMENT.
  
