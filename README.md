@@ -37,7 +37,7 @@ ____________________
  by example:
  @SqliteColumn(constraint = ConstraintType.NOTNULL)
  ````
- you can follow this link to see the example of object definintion
+ you can follow this link to see the example of object definition
   [The Example](https://github.com/tabarakMohammed/tickTackORM/blob/main/src/test/java/model/test.java)
   
   ____________________________________________________________________
